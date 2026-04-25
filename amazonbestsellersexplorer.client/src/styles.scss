@@ -11,3 +11,8 @@ body {
   color: var(--p-text-color);
   min-height: 100vh;
 }
+
+/* Hide PrimeNG password feedback panel globally */
+.p-password-overlay {
+  display: none !important;
+}

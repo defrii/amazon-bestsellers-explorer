@@ -10,21 +10,31 @@
       </div>
     </ng-template>
 
-    <form (ngSubmit)="register()">
+    <form #registerForm="ngForm" (ngSubmit)="registerForm.valid && register()">
       <div class="form-container">
         <div class="input-group">
           <label for="login">Username</label>
-          <input pInputText id="login" name="login" [(ngModel)]="login" required minlength="5" maxlength="50" class="w-full" />
+          <input pInputText id="login" name="login" [(ngModel)]="login" required minlength="5" maxlength="50" pattern="^[a-zA-Z0-9!@#\$%\^&\*\(\)_\+\-\=\[\]\{\}\|;:'&quot;,\.<>\/\?\`~]+$" class="w-full" #loginCtrl="ngModel" />
+          <small class="p-error block mt-1" *ngIf="loginCtrl.invalid && (loginCtrl.dirty || loginCtrl.touched)">
+            <span *ngIf="loginCtrl.errors?.['required']">Username is required. </span>
+            <span *ngIf="loginCtrl.errors?.['minlength']">Must be at least 5 characters. </span>
+            <span *ngIf="loginCtrl.errors?.['pattern']">Only English letters, numbers, and special characters allowed.</span>
+          </small>
         </div>
 
         <div class="input-group">
           <label for="password">Password</label>
-          <p-password id="password" name="password" [(ngModel)]="password" required [toggleMask]="true" [feedback]="true" promptLabel="Choose a password" weakLabel="Too simple" mediumLabel="Average complexity" strongLabel="Complex password" styleClass="w-full" inputStyleClass="w-full"></p-password>
+          <p-password id="password" name="password" [(ngModel)]="password" required [minlength]="8" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$" [toggleMask]="true" [feedback]="false" styleClass="w-full" inputStyleClass="w-full" #passwordCtrl="ngModel"></p-password>
+          <small class="p-error block mt-1" *ngIf="passwordCtrl.invalid && (passwordCtrl.dirty || passwordCtrl.touched)">
+            <span *ngIf="passwordCtrl.errors?.['required']">Password is required. </span>
+            <span *ngIf="passwordCtrl.errors?.['minlength']">Must be at least 8 characters. </span>
+            <span *ngIf="passwordCtrl.errors?.['pattern']">Must contain at least one uppercase letter, one lowercase letter, one number, and one special character.</span>
+          </small>
         </div>
 
         <p-message *ngIf="message" [severity]="message === 'Registration successful' ? 'success' : 'error'" [text]="message" styleClass="block w-full"></p-message>
 
-        <p-button type="submit" label="Register" icon="pi pi-check" styleClass="w-full mt-2"></p-button>
+        <p-button type="submit" label="Register" icon="pi pi-check" styleClass="w-full mt-2" [disabled]="!registerForm.valid || isLoading()" [loading]="isLoading()"></p-button>
 
         <div class="login-link-container">
           Already have an account? <a routerLink="/login">Sign in</a>

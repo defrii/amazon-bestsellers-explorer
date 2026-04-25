@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -29,11 +29,13 @@ export class RegisterComponent {
   login = '';
   password = '';
   message = '';
+  isLoading = signal(false);
 
   constructor(private http: HttpClient, private router: Router) {}
 
   register() {
     this.message = '';
+    this.isLoading.set(true);
     const payload = { login: this.login, password: this.password };
     this.http.post('/api/auth/register', payload).subscribe({
       next: (res: any) => {
@@ -41,6 +43,7 @@ export class RegisterComponent {
         const payload = { login: this.login, password: this.password };
         this.http.post('/api/auth/login', payload).subscribe({
           next: (loginRes: any) => {
+            this.isLoading.set(false);
             if (loginRes?.token) {
               localStorage.setItem('jwt', loginRes.token);
               if (loginRes.login) localStorage.setItem('login', loginRes.login);
@@ -48,17 +51,24 @@ export class RegisterComponent {
             this.router.navigate(['/']);
           },
           error: () => {
+            this.isLoading.set(false);
             // Even if auto-login fails, redirect to home
             this.router.navigate(['/']);
           }
         });
-        this.message = 'Registration successful';
-        this.login = '';
-        this.password = '';
       },
       error: (err) => {
+        this.isLoading.set(false);
         // Try to show server message if available
-        this.message = err?.error || err?.error?.message || err?.statusText || 'Registration failed';
+        if (typeof err?.error === 'string') {
+          this.message = err.error;
+        } else if (err?.error?.message) {
+          this.message = err.error.message;
+        } else if (err?.error?.title) {
+          this.message = err.error.title;
+        } else {
+          this.message = err?.statusText || 'Registration failed';
+        }
       }
     });
   }

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using AmazonBestSellersExplorer.WebAPI.Data;
 using AmazonBestSellersExplorer.WebAPI.Models;
 using Microsoft.AspNetCore.Identity;
@@ -43,8 +43,14 @@ namespace AmazonBestSellersExplorer.WebAPI.Controllers
             if (string.IsNullOrWhiteSpace(dto.Login) || dto.Login.Length < 5 || dto.Login.Length > 50)
                 return BadRequest("Login must be between 5 and 50 characters.");
 
-            if (string.IsNullOrWhiteSpace(dto.Password) || dto.Password.Length < 6)
-                return BadRequest("Password must be at least 6 characters.");
+            if (!System.Text.RegularExpressions.Regex.IsMatch(dto.Login, @"^[a-zA-Z0-9!@#\$%\^&\*\(\)_\+\-\=\[\]\{\}\|;:'"",\.<>\/\?\`~]+$"))
+                return BadRequest("Login can only contain English letters, numbers, and special characters.");
+
+            if (string.IsNullOrWhiteSpace(dto.Password) || dto.Password.Length < 8)
+                return BadRequest("Password must be at least 8 characters.");
+
+            if (!System.Text.RegularExpressions.Regex.IsMatch(dto.Password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$"))
+                return BadRequest("Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.");
 
             if (_db.Users.Any(u => u.Login == dto.Login))
                 return Conflict("Login already exists.");
