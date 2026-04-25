@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="amazonbestsellersexplorer.client/amazonbestsellersexplorer.client.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="AmazonBestSellersExplorer.WebAPI/AmazonBestSellersExplorer.WebAPI.csproj" />
+</Solution>
