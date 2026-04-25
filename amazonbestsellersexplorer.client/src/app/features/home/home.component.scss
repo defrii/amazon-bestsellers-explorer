@@ -12,7 +12,9 @@
 }
 
 .toolbar-actions {
-  gap: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .user-greeting {

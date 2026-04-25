@@ -4,13 +4,20 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  position: relative;
+}
+
+.back-nav {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
 }
 
 :host ::ng-deep {
   .login-card {
-    width: 400px;
+    width: 480px;
     max-width: 90vw;
-    margin-top: -10vh;
+    margin-top: -5vh;
   }
 
   .w-full {

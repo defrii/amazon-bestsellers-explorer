@@ -1,5 +1,8 @@
 <div class="register-container">
-  <p-card styleClass="register-card shadow-4 border-round-xl">
+  <div class="back-nav">
+    <p-button icon="pi pi-arrow-left" label="Back to Home" [text]="true" routerLink="/"></p-button>
+  </div>
+  <p-card styleClass="register-card shadow-6 border-round-xl" [style]="{'border-top': '5px solid var(--p-primary-color)'}">
     <ng-template #title>
       <div class="card-title">
         <i class="pi pi-user-plus"></i>
