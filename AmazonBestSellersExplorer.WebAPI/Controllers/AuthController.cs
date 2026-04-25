@@ -82,10 +82,11 @@ namespace AmazonBestSellersExplorer.WebAPI.Controllers
             var jwtAudience = _configuration["Jwt:Audience"];
             var expiresMinutes = int.Parse(_configuration["Jwt:ExpiresMinutes"] ?? "60");
 
+            
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
-                new Claim("login", user.Login),
+                new Claim(JwtRegisteredClaimNames.Name, user.Login),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 

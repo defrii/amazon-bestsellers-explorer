@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 // short model for product
 type Product = { photo?: string; title?: string; price?: string; starRating?: string; url?: string; asin?: string };
@@ -9,7 +9,7 @@ type Product = { photo?: string; title?: string; price?: string; starRating?: st
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
