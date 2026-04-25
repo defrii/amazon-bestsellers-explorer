@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -28,27 +28,42 @@ import { MessageModule } from 'primeng/message';
 export class LoginComponent {
   login = '';
   password = '';
-  message = '';
+  message = signal('');
+  isLoading = signal(false);
+  private loadingTimeout: any;
 
   constructor(private http: HttpClient, private router: Router) {}
 
   loginUser() {
-    this.message = '';
+    this.message.set('');
+    clearTimeout(this.loadingTimeout);
+    this.loadingTimeout = setTimeout(() => this.isLoading.set(true), 300);
     const payload = { login: this.login, password: this.password };
     this.http.post('/api/auth/login', payload).subscribe({
       next: (res: any) => {
+        clearTimeout(this.loadingTimeout);
+        this.isLoading.set(false);
         if (res?.token) {
           localStorage.setItem('jwt', res.token);
           if (res.login) localStorage.setItem('login', res.login);
-          this.message = 'Login successful';
           // redirect to home
           this.router.navigate(['/']);
         } else {
-          this.message = 'Login succeeded, but no token received.';
+          this.message.set('Login succeeded, but no token received.');
         }
       },
       error: (err) => {
-        this.message = err?.error || err?.error?.message || err?.statusText || 'Login failed';
+        clearTimeout(this.loadingTimeout);
+        this.isLoading.set(false);
+        if (typeof err?.error === 'string') {
+          this.message.set(err.error);
+        } else if (err?.error?.message) {
+          this.message.set(err.error.message);
+        } else if (err?.error?.title) {
+          this.message.set(err.error.title);
+        } else {
+          this.message.set(err?.statusText || 'Login failed');
+        }
       }
     });
   }

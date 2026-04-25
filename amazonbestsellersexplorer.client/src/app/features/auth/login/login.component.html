@@ -10,7 +10,7 @@
       </div>
     </ng-template>
 
-    <form (ngSubmit)="loginUser()">
+    <form #loginForm="ngForm" (ngSubmit)="loginForm.valid && loginUser()">
       <div class="form-container">
         <div class="input-group">
           <label for="login">Username</label>
@@ -22,9 +22,9 @@
           <p-password id="password" name="password" [(ngModel)]="password" required [toggleMask]="true" [feedback]="false" styleClass="w-full" inputStyleClass="w-full"></p-password>
         </div>
 
-        <p-message *ngIf="message" severity="error" [text]="message" styleClass="block w-full"></p-message>
+        <p-message *ngIf="message()" severity="error" [text]="message()" styleClass="block w-full"></p-message>
 
-        <p-button type="submit" label="Sign In" icon="pi pi-sign-in" styleClass="w-full mt-2"></p-button>
+        <p-button type="submit" label="Sign In" icon="pi pi-sign-in" styleClass="w-full mt-2" [disabled]="!loginForm.valid || isLoading()" [loading]="isLoading()"></p-button>
 
         <div class="register-link-container">
           Don't have an account? <a routerLink="/register">Register</a>
