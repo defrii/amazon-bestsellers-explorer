@@ -10,8 +10,16 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
+  loggedUser = localStorage.getItem('login') || 'none';
+
   constructor(private router: Router) {}
   goLogin() { this.router.navigate(['/login']); }
   goRegister() { this.router.navigate(['/register']); }
+  logout() {
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('login');
+    this.loggedUser = 'none';
+    // stay on home; optionally reload
+  }
 }
 

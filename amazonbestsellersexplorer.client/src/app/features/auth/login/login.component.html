@@ -1,2 +1,17 @@
-﻿<h1>Login here</h1>
+﻿<h1>Login</h1>
 
+<form (ngSubmit)="loginUser()">
+  <div>
+	<label for="login">Login</label>
+	<input id="login" name="login" [(ngModel)]="login" required minlength="5" maxlength="50" />
+  </div>
+
+  <div>
+	<label for="password">Password</label>
+	<input id="password" name="password" type="password" [(ngModel)]="password" required minlength="6" />
+  </div>
+
+  <button type="submit">Login</button>
+</form>
+
+<div *ngIf="message">{{ message }}</div>
