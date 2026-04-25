@@ -1,0 +1,326 @@
+{
+  "status": "OK",
+  "request_id": "2c3a33a8-3dfe-40cf-a8e9-491f4b1d80b9",
+  "parameters": {
+    "country": "PL",
+    "language": "pl_PL",
+    "type": "BEST_SELLERS",
+    "page": 1,
+    "category": "software"
+  },
+  "data": {
+    "best_sellers": [
+      {
+        "rank": 1,
+        "asin": "B0BXPW6H5P",
+        "product_title": "Nero VHS to USB Video Grabber Recode Stick wraz z oprogramowaniem do edycji wideo | edycji wideo | digitalizacji kaset wideo ",
+        "product_price": "107,35 zł",
+        "product_star_rating": "3.6",
+        "product_num_ratings": 277,
+        "product_url": "https://www.amazon.pl/dp/B0BXPW6H5P",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/81FujAxfe8L._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      },
+      {
+        "rank": 2,
+        "asin": "B0CGLN3DM8",
+        "product_title": "Nero Burn Express 5 - Nagrywanie | Kopiowanie | Zgrywanie | Konwersja | Kopia zapasowa | Ochrona",
+        "product_price": "72,15 zł",
+        "product_star_rating": "3.6",
+        "product_num_ratings": 44,
+        "product_url": "https://www.amazon.pl/dp/B0CGLN3DM8",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/71-KWAbC9OL._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      },
+      {
+        "rank": 3,
+        "asin": "B0BDMCB3JP",
+        "product_title": "McAfee Total Protection 2024 | 10 urządzeń | Oprogramowanie antywirusowe zapewniające bezpieczeństwo w sieci | Roczna subskry",
+        "product_price": "84,49 zł",
+        "product_star_rating": "4.2",
+        "product_num_ratings": 1080,
+        "product_url": "https://www.amazon.pl/dp/B0BDMCB3JP",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/71MjS6v26eL._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      },
+      {
+        "rank": 4,
+        "asin": "B0BLQ7GVV3",
+        "product_title": "Libre Office 2026 Kompatybilny z Microsoft Office 2024 365 Professional Plus 2021 Home and Student Word Excel PowerPoint & Ad",
+        "product_price": "74,99 zł",
+        "product_star_rating": "4",
+        "product_num_ratings": 203,
+        "product_url": "https://www.amazon.pl/dp/B0BLQ7GVV3",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/51Nb8p0lYnL._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      },
+      {
+        "rank": 5,
+        "asin": "B0C5XQH39D",
+        "product_title": "Ratowanie kaset wideo NERO - bardzo łatwe bez wcześniejszej wiedzy | S-VHS | Hi8 | Super 8 | DVD na PC | 1 PC | Oprogramowani",
+        "product_price": "209,95 zł",
+        "product_star_rating": "3.4",
+        "product_num_ratings": 224,
+        "product_url": "https://www.amazon.pl/dp/B0C5XQH39D",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/71v0QPP+miL._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      },
+      {
+        "rank": 6,
+        "asin": "B0BLQ6XQY9",
+        "product_title": "GIMP Photo Editor 2026 Premium Professional Image Editing Software CD jest kompatybilny z systemami Windows 11, 10, 8, 7, Vis",
+        "product_price": "74,99 zł",
+        "product_star_rating": "3.9",
+        "product_num_ratings": 263,
+        "product_url": "https://www.amazon.pl/dp/B0BLQ6XQY9",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/61Mw9zor+ML._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      },
+      {
+        "rank": 7,
+        "asin": "B0BS6H9GLY",
+        "product_title": "Oryginalny | Nero Burning ROM 2025 | program do nagrywania dla Windows 11, 10, 8, 7 | nagrywanie, kopiowanie, tworzenie kopii",
+        "product_price": "151,95 zł",
+        "product_star_rating": "3.9",
+        "product_num_ratings": 365,
+        "product_url": "https://www.amazon.pl/dp/B0BS6H9GLY",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/71V+c0x8IoL._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      },
+      {
+        "rank": 8,
+        "asin": "B0BG2WKWR9",
+        "product_title": "Roczna subskrypcja NordVPN Standard,oprogramowania zapewniającego ochronę w internecie dla 6 urządzeń – chroń dane osobowe or",
+        "product_price": "217,25 zł",
+        "product_star_rating": "5",
+        "product_num_ratings": 1,
+        "product_url": "https://www.amazon.pl/dp/B0BG2WKWR9",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/71JiqCx+EdL._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      },
+      {
+        "rank": 9,
+        "asin": "B0BN85JW53",
+        "product_title": "Nero Burning ROM 2025 | Oryginalny | Program do nagrywania | CD DVD Bluray | Ripping | Kopiowanie | Windows 11 / 10 / 8 / 7 |",
+        "product_price": "151,95 zł",
+        "product_star_rating": "3.9",
+        "product_num_ratings": 266,
+        "product_url": "https://www.amazon.pl/dp/B0BN85JW53",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/51EMJ82b38L._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      },
+      {
+        "rank": 10,
+        "asin": "B0BDM6RRZG",
+        "product_title": "Oryginał: Nero Burning ROM na USB Stick | Burning Software - Burn - Copy - Rip - Backup Movies, Photos, Music and Data | CD D",
+        "product_price": "213,19 zł",
+        "product_star_rating": "3.7",
+        "product_num_ratings": 87,
+        "product_url": "https://www.amazon.pl/dp/B0BDM6RRZG",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/71YNamELOYL._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      },
+      {
+        "rank": 11,
+        "asin": "B07V7R2GTT",
+        "product_title": "Norton N360 Deluxe | Deluxe | Urządzenie 5 | 12 m | PC / Mac / iOS / Android | Pobierz",
+        "product_price": null,
+        "product_star_rating": "4.4",
+        "product_num_ratings": 4589,
+        "product_url": "https://www.amazon.pl/dp/B07V7R2GTT",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/71n5jCLDq7L._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      },
+      {
+        "rank": 12,
+        "asin": "B0BLK7RCY6",
+        "product_title": "Office Suite 2026 kompatybilny z Microsoft Office 2024, 365, 2021, 2019, 2016, 2013, Word Excel PowerPoint na płycie CD Zasil",
+        "product_price": "74,99 zł",
+        "product_star_rating": "3.9",
+        "product_num_ratings": 501,
+        "product_url": "https://www.amazon.pl/dp/B0BLK7RCY6",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/71gNKoc3EQL._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      },
+      {
+        "rank": 13,
+        "asin": "B0989T5V91",
+        "product_title": "Moho Pro 13.5 | The all-in-one animation tool for professionals and digital artists | Software for PC and Mac OS",
+        "product_price": "817,65 zł",
+        "product_star_rating": "4.7",
+        "product_num_ratings": 82,
+        "product_url": "https://www.amazon.pl/dp/B0989T5V91",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/81Vc9sFWMsL._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      },
+      {
+        "rank": 14,
+        "asin": "B0934BTBVR",
+        "product_title": "MonDico - Edytor słowników cyfrowych, leksykonów i glosariuszy - Licencja osobista - 1 komputer",
+        "product_price": "129,00 zł",
+        "product_star_rating": null,
+        "product_num_ratings": null,
+        "product_url": "https://www.amazon.pl/dp/B0934BTBVR",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/41UVi9twtzL._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      },
+      {
+        "rank": 15,
+        "asin": "B07DYSR1QH",
+        "product_title": "CLIP STUDIO PAINT PRO - NEW Branding - for Microsoft Windows and MacOS",
+        "product_price": null,
+        "product_star_rating": "4.5",
+        "product_num_ratings": 2986,
+        "product_url": "https://www.amazon.pl/dp/B07DYSR1QH",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/71K8CrFujrL._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      },
+      {
+        "rank": 16,
+        "asin": "B0BKG8GYS5",
+        "product_title": "Nero Video 2025 na USB Stick | Program do edycji wideo | 8K | nieograniczona licencja | Windows 11/ 10 / 8 / 7",
+        "product_price": "213,19 zł",
+        "product_star_rating": "3.2",
+        "product_num_ratings": 107,
+        "product_url": "https://www.amazon.pl/dp/B0BKG8GYS5",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/81Z7R42VtDL._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      },
+      {
+        "rank": 17,
+        "asin": "B0CT3QZ63F",
+        "product_title": "Nero Video Upscaler Pro 365 | AI | Poprawa jakości wideo | Sztuczna inteligencja | Wysoka rozdzielczość | Redukcja szumów | A",
+        "product_price": "213,19 zł",
+        "product_star_rating": "3.7",
+        "product_num_ratings": 36,
+        "product_url": "https://www.amazon.pl/dp/B0CT3QZ63F",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/717ILA0rViL._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      },
+      {
+        "rank": 18,
+        "asin": "B006E0SRPK",
+        "product_title": "Roxio Easy VHS to DVD 3 Plus (PC)",
+        "product_price": null,
+        "product_star_rating": "3.8",
+        "product_num_ratings": 298,
+        "product_url": "https://www.amazon.pl/dp/B006E0SRPK",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/61zEVVCAoUL._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      },
+      {
+        "rank": 19,
+        "asin": "B07N45MZVB",
+        "product_title": "OfficeSuite Personal - 1 Year License - Documents, Sheets, Slides, PDF, Mail & Calendar for Windows for 1 Windows & 2 Mobile ",
+        "product_price": "199,99 zł",
+        "product_star_rating": "3.5",
+        "product_num_ratings": 974,
+        "product_url": "https://www.amazon.pl/dp/B07N45MZVB",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/61+quQY1M2L._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      },
+      {
+        "rank": 20,
+        "asin": "B07GD4PGTT",
+        "product_title": "CLIP STUDIO PAINT EX - NOWY - dla Windows i macOS (wersja niemiecka)",
+        "product_price": "212,47 zł",
+        "product_star_rating": "4.3",
+        "product_num_ratings": 35,
+        "product_url": "https://www.amazon.pl/dp/B07GD4PGTT",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/71hFVk3tzoL._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      },
+      {
+        "rank": 21,
+        "asin": "B0BYNYTV4N",
+        "product_title": "PAKIET OPROGRAMOWANIA: Nero Platinum Unlimited na USB Stick | Edycja wideo | Backup | Zarządzanie i odtwarzanie mediów | 8K |",
+        "product_price": "426,59 zł",
+        "product_star_rating": "4.3",
+        "product_num_ratings": 64,
+        "product_url": "https://www.amazon.pl/dp/B0BYNYTV4N",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/71yhJ4sqUQL._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      },
+      {
+        "rank": 22,
+        "asin": "B084RLNTL2",
+        "product_title": "AVG Internet Security 2026 | Multi-device | 10 Devices | 1 Year | PC/Mac/Android",
+        "product_price": "120,93 zł",
+        "product_star_rating": "4.1",
+        "product_num_ratings": 103,
+        "product_url": "https://www.amazon.pl/dp/B084RLNTL2",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/51YR+Bs+VqL._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      },
+      {
+        "rank": 23,
+        "asin": "B0989SCNG4",
+        "product_title": "Moho Debut 13.5 | Create your own cartoons and animations in minutes | Software for PC and Mac OS",
+        "product_price": "119,98 zł",
+        "product_star_rating": "4",
+        "product_num_ratings": 166,
+        "product_url": "https://www.amazon.pl/dp/B0989SCNG4",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/81vDL8wZK9S._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      },
+      {
+        "rank": 24,
+        "asin": "B0B399147F",
+        "product_title": "Advanced File Recovery — oprogramowanie dla komputerów z systemem Windows 1 rok 1 | Odzyskaj dokumenty z systemu Windows | Ze",
+        "product_price": "119,00 zł",
+        "product_star_rating": "3.2",
+        "product_num_ratings": 97,
+        "product_url": "https://www.amazon.pl/dp/B0B399147F",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/71KO1IVaS7L._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      },
+      {
+        "rank": 25,
+        "asin": "B08HDQK6G9",
+        "product_title": "Video Deluxe 2021 – czas na lepsze nagrania wideo!",
+        "product_price": null,
+        "product_star_rating": "3.9",
+        "product_num_ratings": 53,
+        "product_url": "https://www.amazon.pl/dp/B08HDQK6G9",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/71EWEjhtskL._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      },
+      {
+        "rank": 26,
+        "asin": "B07ZW9NTG7",
+        "product_title": "Kaspersky Total Security 2021 - 3 Gerate - 1 Jahr",
+        "product_price": "160,67 zł",
+        "product_star_rating": "4.5",
+        "product_num_ratings": 183,
+        "product_url": "https://www.amazon.pl/dp/B07ZW9NTG7",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/51gBfqtnb1L._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      },
+      {
+        "rank": 27,
+        "asin": "B0BZ4ZQV96",
+        "product_title": "Nero Diashow design | Slideshow Maker | Tworzenie pokazów slajdów ze zdjęć, muzyki i filmów | Windows 11 / 10 / 8 / 7 | nieog",
+        "product_price": "170,51 zł",
+        "product_star_rating": "3.1",
+        "product_num_ratings": 120,
+        "product_url": "https://www.amazon.pl/dp/B0BZ4ZQV96",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/71Pm8s9JdBL._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      },
+      {
+        "rank": 28,
+        "asin": "B0BTTG3LY2",
+        "product_title": "Nero Nagrywanie i kopiowanie DVD | Nero Burning ROM 2025 | Program do nagrywania | Oprogramowanie do nagrywania płyt cd | Nag",
+        "product_price": "213,19 zł",
+        "product_star_rating": "3.8",
+        "product_num_ratings": 87,
+        "product_url": "https://www.amazon.pl/dp/B0BTTG3LY2",
+        "product_photo": "https://images-eu.ssl-images-amazon.com/images/I/71SM8fOiTRL._AC_UL900_SR900,600_.jpg",
+        "rank_change_label": null
+      }
+    ],
+    "category_name": "Oprogramowanie",
+    "country": "PL",
+    "domain": "www.amazon.pl"
+  }
+}

@@ -22,29 +22,51 @@ namespace AmazonBestSellersExplorer.WebAPI.Controllers
 		[HttpGet("best-sellers")]
 		public async Task<IActionResult> GetBestSellers()
 		{
-			var rapidHost = _configuration["RapidApi:Host"];
-			var rapidKey = _configuration["RapidApi:Key"];
-			if (string.IsNullOrEmpty(rapidHost) || string.IsNullOrEmpty(rapidKey))
-			{
-				return Problem(detail: "RapidApi:Host or RapidApi:Key is not configured.", statusCode: 500);
-			}
-
-			var apiUrl = $"https://{rapidHost}/best-sellers?category=software&type=BEST_SELLERS&page=1&country=PL";
+			var useMock = _configuration.GetValue<bool>("Amazon:UseMock");
+			var mockFile = _configuration["Amazon:MockFile"];
 
 			try
 			{
-				var client = _httpClientFactory.CreateClient();
-				using var request = new HttpRequestMessage(HttpMethod.Get, apiUrl);
-				request.Headers.Add("x-rapidapi-host", rapidHost);
-				request.Headers.Add("x-rapidapi-key", rapidKey);
-				request.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-				
-				var response = await client.SendAsync(request);
-				var content = await response.Content.ReadAsStringAsync();
+				string content;
 
-				if (!response.IsSuccessStatusCode)
+				if (useMock)
 				{
-					return StatusCode((int)response.StatusCode, content);
+					if (string.IsNullOrWhiteSpace(mockFile))
+					{
+						return Problem(detail: "Amazon:MockFile is not configured.", statusCode: 500);
+					}
+
+					var mockPath = Path.Combine(Directory.GetCurrentDirectory(), "Resources", mockFile);
+					if (!System.IO.File.Exists(mockPath))
+					{
+						return Problem(detail: $"Mock file not found: {mockPath}", statusCode: 500);
+					}
+
+					content = await System.IO.File.ReadAllTextAsync(mockPath);
+				}
+				else
+				{
+					var rapidHost = _configuration["RapidApi:Host"];
+					var rapidKey = _configuration["RapidApi:Key"];
+					if (string.IsNullOrEmpty(rapidHost) || string.IsNullOrEmpty(rapidKey))
+					{
+						return Problem(detail: "RapidApi:Host or RapidApi:Key is not configured.", statusCode: 500);
+					}
+
+					var apiUrl = $"https://{rapidHost}/best-sellers?category=software&type=BEST_SELLERS&page=1&country=PL";
+					var client = _httpClientFactory.CreateClient();
+					using var request = new HttpRequestMessage(HttpMethod.Get, apiUrl);
+					request.Headers.Add("x-rapidapi-host", rapidHost);
+					request.Headers.Add("x-rapidapi-key", rapidKey);
+					request.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+					var response = await client.SendAsync(request);
+					content = await response.Content.ReadAsStringAsync();
+
+					if (!response.IsSuccessStatusCode)
+					{
+						return StatusCode((int)response.StatusCode, content);
+					}
 				}
 
 				// Parse RapidAPI response and map to our DTO
