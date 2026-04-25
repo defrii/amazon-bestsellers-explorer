@@ -56,6 +56,8 @@ builder.Services.AddAuthentication(options =>
 
 // Add controllers (for API endpoints)
 builder.Services.AddControllers();
+// Register HttpClient factory so controllers can call external APIs
+builder.Services.AddHttpClient();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

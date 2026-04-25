@@ -6,3 +6,22 @@
   <button *ngIf="loggedUser !== 'none'" (click)="logout()" style="margin-left:8px;">Logout</button>
 </div>
 
+<div style="margin-top:20px;">
+  <div *ngIf="products() === null">Loading products...</div>
+  <div *ngIf="error" style="color:darkred">{{ error }}</div>
+
+  <div *ngIf="products()?.length">
+    <div *ngFor="let p of products()" style="display:flex;align-items:center;border-bottom:1px solid #ddd;padding:8px 0;">
+      <img *ngIf="p.photo" [src]="p.photo" alt="img" style="width:80px;height:80px;object-fit:cover;margin-right:12px;" />
+      <div style="flex:1;">
+        <div style="font-weight:600">{{ p.title || 'No title' }}</div>
+        <div style="color:green;margin-top:6px">{{ p.price || 'N/A' }}</div>
+        <div style="margin-top:6px">Rating: <span *ngIf="p.starRating">{{ p.starRating }}</span><span *ngIf="!p.starRating">N/A</span></div>
+      </div>
+      <div style="margin-left:12px;">
+        <button *ngIf="p.url" (click)="openUrl(p.url)">URL</button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="products() !== null && !products()?.length">No products found.</div>
+</div>
