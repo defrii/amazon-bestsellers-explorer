@@ -1,17 +1,32 @@
-﻿<h1>Login</h1>
+<div class="login-container">
+  <p-card styleClass="login-card shadow-4 border-round-xl">
+    <ng-template #title>
+      <div class="card-title">
+        <i class="pi pi-user"></i>
+        Welcome Back
+      </div>
+    </ng-template>
 
-<form (ngSubmit)="loginUser()">
-  <div>
-	<label for="login">Login</label>
-	<input id="login" name="login" [(ngModel)]="login" required minlength="5" maxlength="50" />
-  </div>
+    <form (ngSubmit)="loginUser()">
+      <div class="form-container">
+        <div class="input-group">
+          <label for="login">Username</label>
+          <input pInputText id="login" name="login" [(ngModel)]="login" required minlength="5" maxlength="50" class="w-full" />
+        </div>
 
-  <div>
-	<label for="password">Password</label>
-	<input id="password" name="password" type="password" [(ngModel)]="password" required minlength="6" />
-  </div>
+        <div class="input-group">
+          <label for="password">Password</label>
+          <p-password id="password" name="password" [(ngModel)]="password" required [toggleMask]="true" [feedback]="false" styleClass="w-full" inputStyleClass="w-full"></p-password>
+        </div>
 
-  <button type="submit">Login</button>
-</form>
+        <p-message *ngIf="message" severity="error" [text]="message" styleClass="block w-full"></p-message>
 
-<div *ngIf="message">{{ message }}</div>
+        <p-button type="submit" label="Sign In" icon="pi pi-sign-in" styleClass="w-full mt-2"></p-button>
+
+        <div class="register-link-container">
+          Don't have an account? <a routerLink="/register">Register</a>
+        </div>
+      </div>
+    </form>
+  </p-card>
+</div>

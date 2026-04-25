@@ -1,3 +1,70 @@
-﻿
 /* Styles for LoginComponent */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
 
+:host ::ng-deep {
+  .login-card {
+    width: 400px;
+    max-width: 90vw;
+    margin-top: -10vh;
+  }
+
+  .w-full {
+    width: 100% !important;
+  }
+
+  .block {
+    display: block !important;
+  }
+
+  .mt-2 {
+    margin-top: 0.5rem !important;
+  }
+}
+
+.card-title {
+  text-align: center;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--p-primary-color);
+
+  i {
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+  }
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  label {
+    font-weight: 500;
+    color: var(--p-text-color);
+  }
+}
+
+.register-link-container {
+  text-align: center;
+  margin-top: 1rem;
+  color: var(--p-text-color-secondary);
+
+  a {
+    color: var(--p-primary-color);
+    text-decoration: none;
+    font-weight: 600;
+  }
+}

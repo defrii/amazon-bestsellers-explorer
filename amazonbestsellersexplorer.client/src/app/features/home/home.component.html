@@ -1,27 +1,74 @@
-﻿<h1>main list</h1>
-<div>Logged user: {{ loggedUser }}</div>
-<div style="margin-top: 12px;">
-  <button (click)="goLogin()" style="margin-right:8px;">Login</button>
-  <button (click)="goRegister()">Register</button>
-  <button *ngIf="loggedUser !== 'none'" (click)="logout()" style="margin-left:8px;">Logout</button>
-</div>
-
-<div style="margin-top:20px;">
-  <div *ngIf="products() === null">Loading products...</div>
-  <div *ngIf="error" style="color:darkred">{{ error }}</div>
-
-  <div *ngIf="products()?.length">
-    <div *ngFor="let p of products()" style="display:flex;align-items:center;border-bottom:1px solid #ddd;padding:8px 0;">
-      <img *ngIf="p.photo" [src]="p.photo" alt="img" style="width:80px;height:80px;object-fit:cover;margin-right:12px;" />
-      <div style="flex:1;">
-        <div style="font-weight:600">{{ p.title || 'No title' }}</div>
-        <div style="color:green;margin-top:6px">{{ p.price || 'N/A' }}</div>
-        <div style="margin-top:6px">Rating: <span *ngIf="p.starRating">{{ p.starRating }}</span><span *ngIf="!p.starRating">N/A</span></div>
-      </div>
-      <div style="margin-left:12px;">
-        <button *ngIf="p.url" (click)="openUrl(p.url)">URL</button>
-      </div>
+<p-toolbar>
+    <div class="p-toolbar-group-start">
+        <h2 class="toolbar-title">
+            <i class="pi pi-shopping-cart"></i> Amazon Explorer
+        </h2>
     </div>
-  </div>
-  <div *ngIf="products() !== null && !products()?.length">No products found.</div>
+    <div class="p-toolbar-group-end toolbar-actions">
+        <span *ngIf="loggedUser !== 'none'" class="user-greeting">
+            <i class="pi pi-user"></i> {{ loggedUser }}
+        </span>
+        <p-button *ngIf="loggedUser === 'none'" label="Login" icon="pi pi-sign-in" severity="secondary"
+            (onClick)="goLogin()"></p-button>
+        <p-button *ngIf="loggedUser === 'none'" label="Register" icon="pi pi-user-plus"
+            (onClick)="goRegister()"></p-button>
+        <p-button *ngIf="loggedUser !== 'none'" label="Logout" icon="pi pi-sign-out" severity="danger"
+            (onClick)="logout()"></p-button>
+    </div>
+</p-toolbar>
+
+<div class="home-container">
+    <div *ngIf="products() === null" class="loading-container">
+        <p-progressSpinner></p-progressSpinner>
+    </div>
+
+    <div *ngIf="error" class="error-container">
+        <i class="pi pi-exclamation-triangle"></i> {{ error }}
+    </div>
+
+    <div class="page-header" *ngIf="products()?.length">
+        <h1 class="page-title">Przeglądaj bestsellery Amazona z kategorii Software</h1>
+        <p class="page-subtitle">Odkryj najpopularniejsze i najlepiej oceniane programy</p>
+    </div>
+
+    <p-dataView *ngIf="products()?.length" #dv [value]="products()!" [rows]="12" [paginator]="true" layout="grid">
+        <ng-template #grid let-items>
+            <div class="product-grid">
+                <div *ngFor="let p of items" class="product-grid-item">
+                    <p-card styleClass="product-card shadow-2 hover:shadow-4 transition-all transition-duration-300">
+                        <div class="product-header">
+                            <img *ngIf="p.photo" [src]="p.photo" alt="img" class="product-image" />
+                            <div *ngIf="!p.photo" class="product-image-placeholder">
+                                <i class="pi pi-image"></i>
+                            </div>
+                        </div>
+                        <div class="product-content">
+                            <div class="product-title" [title]="p.title">
+                                {{ p.title || 'No title' }}
+                            </div>
+                            <div class="product-details">
+                                <div class="product-price">
+                                    {{ p.price || 'N/A' }}
+                                </div>
+                                <div class="product-rating">
+                                    <p-rating [ngModel]="parseRating(p.starRating)" [readonly]="true"></p-rating>
+                                    <span class="rating-text">
+                                        {{ p.starRating || 'No rating' }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <ng-template pTemplate="footer">
+                            <p-button label="Zobacz w Amazon" icon="pi pi-amazon" (onClick)="openUrl(p.url)" [disabled]="!p.url" styleClass="w-full"></p-button>
+                        </ng-template>
+                    </p-card>
+                </div>
+            </div>
+        </ng-template>
+    </p-dataView>
+
+    <div *ngIf="products() !== null && !products()?.length && !error" class="empty-state">
+        <i class="pi pi-inbox"></i>
+        <span>No products found.</span>
+    </div>
 </div>

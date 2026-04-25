@@ -1,17 +1,32 @@
-﻿<h1>Registration</h1>
+<div class="register-container">
+  <p-card styleClass="register-card shadow-4 border-round-xl">
+    <ng-template #title>
+      <div class="card-title">
+        <i class="pi pi-user-plus"></i>
+        Create Account
+      </div>
+    </ng-template>
 
-<form (ngSubmit)="register()">
-  <div>
-	<label for="login">Login</label>
-	<input id="login" name="login" [(ngModel)]="login" required minlength="5" maxlength="50" />
-  </div>
+    <form (ngSubmit)="register()">
+      <div class="form-container">
+        <div class="input-group">
+          <label for="login">Username</label>
+          <input pInputText id="login" name="login" [(ngModel)]="login" required minlength="5" maxlength="50" class="w-full" />
+        </div>
 
-  <div>
-	<label for="password">Password</label>
-	<input id="password" name="password" type="password" [(ngModel)]="password" required minlength="6" />
-  </div>
+        <div class="input-group">
+          <label for="password">Password</label>
+          <p-password id="password" name="password" [(ngModel)]="password" required [toggleMask]="true" [feedback]="true" promptLabel="Choose a password" weakLabel="Too simple" mediumLabel="Average complexity" strongLabel="Complex password" styleClass="w-full" inputStyleClass="w-full"></p-password>
+        </div>
 
-  <button type="submit">Register</button>
-</form>
+        <p-message *ngIf="message" [severity]="message === 'Registration successful' ? 'success' : 'error'" [text]="message" styleClass="block w-full"></p-message>
 
-<div *ngIf="message">{{ message }}</div>
+        <p-button type="submit" label="Register" icon="pi pi-check" styleClass="w-full mt-2"></p-button>
+
+        <div class="login-link-container">
+          Already have an account? <a routerLink="/login">Sign in</a>
+        </div>
+      </div>
+    </form>
+  </p-card>
+</div>

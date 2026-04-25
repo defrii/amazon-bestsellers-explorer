@@ -1,7 +1,14 @@
-﻿import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { DataViewModule } from 'primeng/dataview';
+import { RatingModule } from 'primeng/rating';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { CardModule } from 'primeng/card';
+import { ToolbarModule } from 'primeng/toolbar';
 
 // short model for product
 type Product = { photo?: string; title?: string; price?: string; starRating?: string; url?: string; asin?: string };
@@ -9,7 +16,16 @@ type Product = { photo?: string; title?: string; price?: string; starRating?: st
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ButtonModule,
+    DataViewModule,
+    RatingModule,
+    ProgressSpinnerModule,
+    CardModule,
+    ToolbarModule
+  ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
@@ -51,5 +67,10 @@ export class HomeComponent implements OnInit {
     if (!url) return;
     window.open(url, '_blank');
   }
-}
 
+  parseRating(rating?: string): number {
+    if (!rating) return 0;
+    const match = rating.match(/([0-9.]+)/);
+    return match ? parseFloat(match[1]) : 0;
+  }
+}
