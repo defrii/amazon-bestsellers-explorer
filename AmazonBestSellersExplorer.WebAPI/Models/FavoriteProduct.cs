@@ -8,6 +8,9 @@
 
         public decimal Price { get; set; }
 
+        // Amazon Standard Identification Number
+        public string Asin { get; set; } = string.Empty;
+
         public string? Url { get; set; }
 
         public string? Photo { get; set; }
