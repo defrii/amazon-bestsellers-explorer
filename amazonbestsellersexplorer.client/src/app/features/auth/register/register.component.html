@@ -1,2 +1,17 @@
 ﻿<h1>Registration</h1>
 
+<form (ngSubmit)="register()">
+  <div>
+	<label for="login">Login</label>
+	<input id="login" name="login" [(ngModel)]="login" required minlength="5" maxlength="50" />
+  </div>
+
+  <div>
+	<label for="password">Password</label>
+	<input id="password" name="password" type="password" [(ngModel)]="password" required minlength="6" />
+  </div>
+
+  <button type="submit">Register</button>
+</form>
+
+<div *ngIf="message">{{ message }}</div>

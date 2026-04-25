@@ -2,7 +2,6 @@
   "/api": {
     "target": "https://localhost:7170",
     "secure": false,
-    "changeOrigin": true,
-    "pathRewrite": { "^/api": "" }
+    "changeOrigin": true
   }
 }

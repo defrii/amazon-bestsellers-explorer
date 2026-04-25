@@ -17,13 +17,16 @@ builder.Services.AddCors(options =>
     });
 });
 
-// In-memory EF Core
+// Use EF Core with SQLite (local file). Connection string from appsettings.json
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseInMemoryDatabase("AmazonBestSellers_InMemory"));
+    options.UseSqlite(connectionString));
 
 // Use ASP.NET Core Identity password hasher
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
+// Add controllers (for API endpoints)
+builder.Services.AddControllers();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -31,4 +34,7 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 
 app.UseCors("AllowAngular");
+
+// Map controller routes
+app.MapControllers();
 app.Run();
