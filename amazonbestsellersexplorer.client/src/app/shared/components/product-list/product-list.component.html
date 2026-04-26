@@ -6,7 +6,7 @@
     <i class="pi pi-exclamation-triangle"></i> {{ error }}
 </div>
 
-<p-dataView *ngIf="products !== null && products.length" [value]="products" [rows]="12" [paginator]="true" layout="grid">
+<p-dataView *ngIf="products !== null && products.length" [value]="products" [paginator]="false" layout="grid">
     <ng-template #grid let-items>
         <div class="product-grid">
             <div *ngFor="let p of items" class="product-grid-item">

@@ -28,7 +28,7 @@ namespace AmazonBestSellersExplorer.WebAPI.Services.API
                 throw new InvalidOperationException("RapidApi:Host or RapidApi:Key is not configured.");
             }
 
-            var apiUrl = $"https://{rapidHost}/best-sellers?category=software&type=BEST_SELLERS&page=1&country=PL";
+            var apiUrl = $"https://{rapidHost}/best-sellers?category=software&type=BEST_SELLERS&country=PL";
             var client = _httpClientFactory.CreateClient();
             using var request = new HttpRequestMessage(HttpMethod.Get, apiUrl);
             request.Headers.Add("x-rapidapi-host", rapidHost);
