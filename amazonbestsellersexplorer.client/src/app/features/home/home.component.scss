@@ -1,4 +1,10 @@
 /* Styles for HomeComponent */
+:host {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
 .toolbar-title {
     margin: 0;
     display: flex;
@@ -26,9 +32,16 @@
 }
 
 .home-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    width: 100%;
     padding: 2rem;
+}
+
+.page-header, .product-grid-wrapper {
     max-width: 1600px;
-    margin: 0 auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .page-header {

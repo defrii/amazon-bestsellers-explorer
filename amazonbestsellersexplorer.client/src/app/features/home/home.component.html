@@ -13,12 +13,14 @@
         <p class="page-subtitle">Odkryj najpopularniejsze i najlepiej oceniane programy</p>
     </div>
 
-    <app-product-list
-        [products]="products()"
-        [favoriteAsins]="favoritesService.favoriteAsins()"
-        [isLoadingFavorite]="favoritesService.isLoadingFavorite()"
-        [loggedUser]="loggedUser"
-        [error]="error"
-        (toggleFavoriteAction)="favoritesService.toggleFavorite($event)">
-    </app-product-list>
+    <div class="product-grid-wrapper">
+        <app-product-list
+            [products]="products()"
+            [favoriteAsins]="favoritesService.favoriteAsins()"
+            [isLoadingFavorite]="favoritesService.isLoadingFavorite()"
+            [loggedUser]="loggedUser"
+            [error]="error"
+            (toggleFavoriteAction)="favoritesService.toggleFavorite($event)">
+        </app-product-list>
+    </div>
 </div>

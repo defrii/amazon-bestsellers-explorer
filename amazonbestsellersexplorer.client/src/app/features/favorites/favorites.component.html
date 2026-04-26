@@ -11,13 +11,15 @@
         <p class="page-subtitle">Twoje zapisane bestsellery Amazona</p>
     </div>
 
-    <app-product-list
-        [products]="products()"
-        [favoriteAsins]="favoritesService.favoriteAsins()"
-        [isLoadingFavorite]="favoritesService.isLoadingFavorite()"
-        [loggedUser]="loggedUser"
-        [error]="error"
-        emptyMessage="Nie masz jeszcze żadnych ulubionych produktów."
-        (toggleFavoriteAction)="handleToggle($event)">
-    </app-product-list>
+    <div class="product-grid-wrapper">
+        <app-product-list
+            [products]="products()"
+            [favoriteAsins]="favoritesService.favoriteAsins()"
+            [isLoadingFavorite]="favoritesService.isLoadingFavorite()"
+            [loggedUser]="loggedUser"
+            [error]="error"
+            emptyMessage="Nie masz jeszcze żadnych ulubionych produktów."
+            (toggleFavoriteAction)="handleToggle($event)">
+        </app-product-list>
+    </div>
 </div>

@@ -9,7 +9,8 @@ body {
   background: linear-gradient(135deg, var(--p-surface-50) 0%, var(--p-surface-200) 100%);
   background-attachment: fixed;
   color: var(--p-text-color);
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
 /* Hide PrimeNG password feedback panel globally */
