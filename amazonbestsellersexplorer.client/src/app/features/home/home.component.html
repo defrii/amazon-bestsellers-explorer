@@ -1,23 +1,11 @@
-<p-toolbar>
-    <div class="p-toolbar-group-start">
-        <h2 class="toolbar-title">
-            <i class="pi pi-shopping-cart"></i> Amazon Explorer
-        </h2>
-    </div>
-    <div class="p-toolbar-group-end toolbar-actions">
-        <span *ngIf="loggedUser !== 'none'" class="user-greeting">
-            <i class="pi pi-user"></i> {{ loggedUser }}
-        </span>
-        <p-button *ngIf="loggedUser === 'none'" label="Login" icon="pi pi-sign-in" severity="secondary"
-            (onClick)="goLogin()"></p-button>
-        <p-button *ngIf="loggedUser === 'none'" label="Register" icon="pi pi-user-plus"
-            (onClick)="goRegister()"></p-button>
-        <p-button *ngIf="loggedUser !== 'none'" label="Moje ulubione" icon="pi pi-heart-fill" severity="danger"
-            [outlined]="true" (onClick)="goFavorites()"></p-button>
-        <p-button *ngIf="loggedUser !== 'none'" label="Logout" icon="pi pi-sign-out" severity="danger"
-            (onClick)="logout()"></p-button>
-    </div>
-</p-toolbar>
+<app-navbar
+    [loggedUser]="loggedUser"
+    [isFavorites]="false"
+    (onLogin)="goLogin()"
+    (onRegister)="goRegister()"
+    (onFavorites)="goFavorites()"
+    (onLogout)="logout()">
+</app-navbar>
 
 <div class="home-container">
     <div class="page-header">

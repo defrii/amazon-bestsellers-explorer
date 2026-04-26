@@ -1,17 +1,9 @@
-<p-toolbar>
-    <div class="p-toolbar-group-start toolbar-left">
-        <p-button icon="pi pi-arrow-left" severity="secondary" [text]="true" (onClick)="goHome()" title="Wróć do katalogu"></p-button>
-        <h2 class="toolbar-title">
-            <i class="pi pi-heart-fill"></i> Moje ulubione
-        </h2>
-    </div>
-    <div class="p-toolbar-group-end toolbar-actions">
-        <span class="user-greeting">
-            <i class="pi pi-user"></i> {{ loggedUser }}
-        </span>
-        <p-button label="Logout" icon="pi pi-sign-out" severity="danger" (onClick)="logout()"></p-button>
-    </div>
-</p-toolbar>
+<app-navbar
+    [loggedUser]="loggedUser"
+    [isFavorites]="true"
+    (onFavorites)="goHome()"
+    (onLogout)="logout()">
+</app-navbar>
 
 <div class="favorites-container">
     <div class="page-header">

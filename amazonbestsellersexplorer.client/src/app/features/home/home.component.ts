@@ -6,6 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { ToolbarModule } from 'primeng/toolbar';
 import { FavoritesService } from '../../core/services/favorites.service';
 import { ProductListComponent } from '../../shared/components/product-list/product-list.component';
+import { NavbarComponent } from '../../shared/components/navbar/navbar.component';
 import { Product } from '../../core/models/product.model';
 
 @Component({
@@ -15,7 +16,8 @@ import { Product } from '../../core/models/product.model';
     CommonModule,
     ButtonModule,
     ToolbarModule,
-    ProductListComponent
+    ProductListComponent,
+    NavbarComponent
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
