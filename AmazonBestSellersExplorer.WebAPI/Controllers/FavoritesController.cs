@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using AmazonBestSellersExplorer.WebAPI.Data;
 using AmazonBestSellersExplorer.WebAPI.Models;
+using AmazonBestSellersExplorer.WebAPI.Services;
 using System.Security.Claims;
 using System.Globalization;
+using System.Linq;
 
 namespace AmazonBestSellersExplorer.WebAPI.Controllers
 {
@@ -13,11 +13,11 @@ namespace AmazonBestSellersExplorer.WebAPI.Controllers
     [Route("api/[controller]")]
     public class FavoritesController : ControllerBase
     {
-        private readonly ApplicationDbContext _db;
+        private readonly IFavoriteProductService _service;
 
-        public FavoritesController(ApplicationDbContext db)
+        public FavoritesController(IFavoriteProductService service)
         {
-            _db = db;
+            _service = service;
         }
 
         private int GetCurrentUserId()
@@ -36,10 +36,7 @@ namespace AmazonBestSellersExplorer.WebAPI.Controllers
             try
             {
                 var userId = GetCurrentUserId();
-                var favorites = await _db.FavoriteProducts
-                    .Where(f => f.UserId == userId)
-                    .Select(f => f.Asin)
-                    .ToListAsync();
+                var favorites = await _service.GetFavoriteAsinsAsync(userId);
 
                 return Ok(favorites);
             }
@@ -55,20 +52,19 @@ namespace AmazonBestSellersExplorer.WebAPI.Controllers
             try
             {
                 var userId = GetCurrentUserId();
-                var favorites = await _db.FavoriteProducts
-                    .Where(f => f.UserId == userId)
-                    .Select(f => new FavoriteProductDto
-                    {
-                        Asin = f.Asin,
-                        Title = f.Title,
-                        Price = f.Price > 0 ? f.Price.ToString("F2", CultureInfo.InvariantCulture) : null,
-                        Url = f.Url,
-                        Photo = f.Photo,
-                        StarRating = f.StarRating.HasValue ? f.StarRating.Value.ToString(CultureInfo.InvariantCulture) : null
-                    })
-                    .ToListAsync();
+                var favorites = await _service.GetFavoriteDetailsAsync(userId);
+                
+                var dtos = favorites.Select(f => new ProductDto
+                {
+                    Asin = f.Asin,
+                    Title = f.Title,
+                    Price = f.Price > 0 ? f.Price.ToString("F2", CultureInfo.InvariantCulture) : null,
+                    Url = f.Url,
+                    Photo = f.Photo,
+                    StarRating = f.StarRating.HasValue ? f.StarRating.Value.ToString(CultureInfo.InvariantCulture) : null
+                }).ToList();
 
-                return Ok(favorites);
+                return Ok(dtos);
             }
             catch (UnauthorizedAccessException)
             {
@@ -76,18 +72,8 @@ namespace AmazonBestSellersExplorer.WebAPI.Controllers
             }
         }
 
-        public class FavoriteProductDto
-        {
-            public string Title { get; set; } = null!;
-            public string? Price { get; set; }
-            public string Asin { get; set; } = null!;
-            public string? Url { get; set; }
-            public string? Photo { get; set; }
-            public string? StarRating { get; set; }
-        }
-
         [HttpPost]
-        public async Task<IActionResult> AddFavorite([FromBody] FavoriteProductDto dto)
+        public async Task<IActionResult> AddFavorite([FromBody] ProductDto dto)
         {
             try
             {
@@ -95,12 +81,6 @@ namespace AmazonBestSellersExplorer.WebAPI.Controllers
 
                 if (string.IsNullOrWhiteSpace(dto.Asin) || string.IsNullOrWhiteSpace(dto.Title))
                     return BadRequest("ASIN and Title are required.");
-
-                var exists = await _db.FavoriteProducts
-                    .AnyAsync(f => f.UserId == userId && f.Asin == dto.Asin);
-
-                if (exists)
-                    return Conflict("Product is already in favorites.");
 
                 decimal parsedPrice = 0;
                 if (!string.IsNullOrWhiteSpace(dto.Price))
@@ -131,10 +111,15 @@ namespace AmazonBestSellersExplorer.WebAPI.Controllers
                     StarRating = parsedRating > 0 ? parsedRating : null
                 };
 
-                _db.FavoriteProducts.Add(favorite);
-                await _db.SaveChangesAsync();
-
-                return Ok(new { asin = favorite.Asin });
+                try
+                {
+                    var result = await _service.AddFavoriteAsync(favorite);
+                    return Ok(new { asin = result.Asin });
+                }
+                catch (System.InvalidOperationException ex)
+                {
+                    return Conflict(ex.Message);
+                }
             }
             catch (UnauthorizedAccessException)
             {
@@ -149,14 +134,10 @@ namespace AmazonBestSellersExplorer.WebAPI.Controllers
             {
                 var userId = GetCurrentUserId();
 
-                var favorite = await _db.FavoriteProducts
-                    .FirstOrDefaultAsync(f => f.UserId == userId && f.Asin == asin);
+                var success = await _service.RemoveFavoriteAsync(userId, asin);
 
-                if (favorite == null)
+                if (!success)
                     return NotFound();
-
-                _db.FavoriteProducts.Remove(favorite);
-                await _db.SaveChangesAsync();
 
                 return NoContent();
             }

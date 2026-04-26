@@ -7,23 +7,15 @@ namespace AmazonBestSellersExplorer.WebAPI.Controllers
 {
 	[ApiController]
 	[Route("api/[controller]")]
-	public class AmazonController : ControllerBase
+	public class AmazonController(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+		: ControllerBase
 	{
-		private readonly IHttpClientFactory _httpClientFactory;
-		private readonly IConfiguration _configuration;
-
-		public AmazonController(IHttpClientFactory httpClientFactory, IConfiguration configuration)
-		{
-			_httpClientFactory = httpClientFactory;
-			_configuration = configuration;
-		}
-
 		// GET: api/amazon/best-sellers
 		[HttpGet("best-sellers")]
 		public async Task<IActionResult> GetBestSellers()
 		{
-			var useMock = _configuration.GetValue<bool>("Amazon:UseMock");
-			var mockFile = _configuration["Amazon:MockFile"];
+			var useMock = configuration.GetValue<bool>("Amazon:UseMock");
+			var mockFile = configuration["Amazon:MockFile"];
 
 			try
 			{
@@ -46,15 +38,15 @@ namespace AmazonBestSellersExplorer.WebAPI.Controllers
 				}
 				else
 				{
-					var rapidHost = _configuration["RapidApi:Host"];
-					var rapidKey = _configuration["RapidApi:Key"];
+					var rapidHost = configuration["RapidApi:Host"];
+					var rapidKey = configuration["RapidApi:Key"];
 					if (string.IsNullOrEmpty(rapidHost) || string.IsNullOrEmpty(rapidKey))
 					{
 						return Problem(detail: "RapidApi:Host or RapidApi:Key is not configured.", statusCode: 500);
 					}
 
 					var apiUrl = $"https://{rapidHost}/best-sellers?category=software&type=BEST_SELLERS&page=1&country=PL";
-					var client = _httpClientFactory.CreateClient();
+					var client = httpClientFactory.CreateClient();
 					using var request = new HttpRequestMessage(HttpMethod.Get, apiUrl);
 					request.Headers.Add("x-rapidapi-host", rapidHost);
 					request.Headers.Add("x-rapidapi-key", rapidKey);

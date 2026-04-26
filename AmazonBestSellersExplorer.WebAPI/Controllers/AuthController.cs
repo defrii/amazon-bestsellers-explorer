@@ -1,12 +1,14 @@
+using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using AmazonBestSellersExplorer.WebAPI.Data;
 using AmazonBestSellersExplorer.WebAPI.Models;
-using Microsoft.AspNetCore.Identity;
+using AmazonBestSellersExplorer.WebAPI.Services;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using System.Threading.Tasks;
 
 namespace AmazonBestSellersExplorer.WebAPI.Controllers
 {
@@ -14,14 +16,12 @@ namespace AmazonBestSellersExplorer.WebAPI.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly ApplicationDbContext _db;
-        private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly IUserService _userService;
         private readonly IConfiguration _configuration;
 
-        public AuthController(ApplicationDbContext db, IPasswordHasher<User> passwordHasher, IConfiguration configuration)
+        public AuthController(IUserService userService, IConfiguration configuration)
         {
-            _db = db;
-            _passwordHasher = passwordHasher;
+            _userService = userService;
             _configuration = configuration;
         }
 
@@ -40,77 +40,65 @@ namespace AmazonBestSellersExplorer.WebAPI.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
-            if (string.IsNullOrWhiteSpace(dto.Login) || dto.Login.Length < 5 || dto.Login.Length > 50)
-                return BadRequest("Login must be between 5 and 50 characters.");
+            var user = new User { Login = dto.Login };
 
-            if (!System.Text.RegularExpressions.Regex.IsMatch(dto.Login, @"^[a-zA-Z0-9!@#\$%\^&\*\(\)_\+\-\=\[\]\{\}\|;:'"",\.<>\/\?\`~]+$"))
-                return BadRequest("Login can only contain English letters, numbers, and special characters.");
-
-            if (string.IsNullOrWhiteSpace(dto.Password) || dto.Password.Length < 8)
-                return BadRequest("Password must be at least 8 characters.");
-
-            if (!System.Text.RegularExpressions.Regex.IsMatch(dto.Password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$"))
-                return BadRequest("Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.");
-
-            if (_db.Users.Any(u => u.Login == dto.Login))
-                return Conflict("Login already exists.");
-
-            var user = new User
+            try
             {
-                Login = dto.Login
-            };
-
-            user.PasswordHash = _passwordHasher.HashPassword(user, dto.Password);
-
-            _db.Users.Add(user);
-            await _db.SaveChangesAsync();
-
-            return CreatedAtAction(null, new { id = user.UserId }, new { userId = user.UserId, login = user.Login });
+                user = await _userService.RegisterUserAsync(user, dto.Password);
+                return CreatedAtAction(null, new { id = user.UserId }, new { userId = user.UserId, login = user.Login });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(ex.Message);
+            }
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginDto dto)
+        public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
-            if (string.IsNullOrWhiteSpace(dto.Login) || string.IsNullOrWhiteSpace(dto.Password))
-                return BadRequest("Login and password required.");
-
-            var user = _db.Users.SingleOrDefault(u => u.Login == dto.Login);
-            if (user == null)
-                return Unauthorized("Invalid credentials");
-
-            var verify = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, dto.Password);
-            if (verify == PasswordVerificationResult.Failed)
-                return Unauthorized("Invalid credentials");
-
-            // Create JWT
-            var jwtKey = _configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key is not configured");
-            var jwtIssuer = _configuration["Jwt:Issuer"];
-            var jwtAudience = _configuration["Jwt:Audience"];
-            var expiresMinutes = int.Parse(_configuration["Jwt:ExpiresMinutes"] ?? "60");
-
-            
-            var claims = new List<Claim>
+            try
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
-                new Claim(JwtRegisteredClaimNames.Name, user.Login),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            };
+                var user = await _userService.AuthenticateUserAsync(dto.Login, dto.Password);
+                
+                if (user == null)
+                    return Unauthorized("Invalid credentials");
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                // Create JWT
+                var jwtKey = _configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key is not configured");
+                var jwtIssuer = _configuration["Jwt:Issuer"];
+                var jwtAudience = _configuration["Jwt:Audience"];
+                var expiresMinutes = int.Parse(_configuration["Jwt:ExpiresMinutes"] ?? "60");
+                
+                var claims = new List<Claim>
+                {
+                    new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Name, user.Login),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                };
 
-            var token = new JwtSecurityToken(
-                issuer: jwtIssuer,
-                audience: jwtAudience,
-                claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(expiresMinutes),
-                signingCredentials: creds
-            );
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+                var token = new JwtSecurityToken(
+                    issuer: jwtIssuer,
+                    audience: jwtAudience,
+                    claims: claims,
+                    expires: DateTime.UtcNow.AddMinutes(expiresMinutes),
+                    signingCredentials: creds
+                );
 
-            return Ok(new { token = tokenString, expires = token.ValidTo, userId = user.UserId, login = user.Login });
+                var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+                return Ok(new { token = tokenString, expires = token.ValidTo, userId = user.UserId, login = user.Login });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
-

@@ -2,6 +2,8 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.EntityFrameworkCore;
 using AmazonBestSellersExplorer.WebAPI.Data;
 using AmazonBestSellersExplorer.WebAPI.Models;
+using AmazonBestSellersExplorer.WebAPI.Repositories;
+using AmazonBestSellersExplorer.WebAPI.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -55,6 +57,12 @@ builder.Services.AddAuthentication(options =>
             NameClaimType = JwtRegisteredClaimNames.Name
         };
     });
+
+// Register Repositories & Services
+builder.Services.AddScoped<IFavoriteProductRepository, FavoriteProductRepository>();
+builder.Services.AddScoped<IFavoriteProductService, FavoriteProductService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 // Add controllers (for API endpoints)
 builder.Services.AddControllers();
