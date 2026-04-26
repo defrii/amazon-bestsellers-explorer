@@ -84,7 +84,7 @@ namespace AmazonBestSellersExplorer.WebAPI.Controllers
                 return Unauthorized();
 
             if (string.IsNullOrWhiteSpace(dto.Asin) || string.IsNullOrWhiteSpace(dto.Title))
-                return BadRequest("ASIN and Title are required.");
+                return BadRequest("ASIN i tytuł są wymagane.");
 
             decimal parsedPrice = 0;
             if (!string.IsNullOrWhiteSpace(dto.Price))

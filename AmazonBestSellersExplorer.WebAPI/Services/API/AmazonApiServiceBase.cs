@@ -34,7 +34,7 @@ namespace AmazonBestSellersExplorer.WebAPI.Services.API
                 return list;
             }
             
-            throw new InvalidOperationException("Unexpected API response structure");
+            throw new InvalidOperationException("Nieoczekiwany błąd API.");
         }
 
         private static string? GetString(JsonElement el, string propertyName)

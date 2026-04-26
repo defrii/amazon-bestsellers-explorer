@@ -30,7 +30,7 @@ namespace AmazonBestSellersExplorer.WebAPI.Services
             var exists = await _repository.ExistsAsync(favoriteProduct.UserId, favoriteProduct.Asin);
 
             if (exists)
-                return ServiceResult<FavoriteProduct>.Failure("Product is already in favorites.");
+                return ServiceResult<FavoriteProduct>.Failure("Produkt już znajduje się w ulubionych.");
 
             await _repository.AddAsync(favoriteProduct);
 
@@ -42,7 +42,7 @@ namespace AmazonBestSellersExplorer.WebAPI.Services
             var favorite = await _repository.GetByAsinAsync(userId, asin);
 
             if (favorite == null)
-                return ServiceResult<bool>.Failure("Favorite not found.");
+                return ServiceResult<bool>.Failure("Nie znaleziono ulubionego produktu.");
 
             await _repository.RemoveAsync(favorite);
             return ServiceResult<bool>.Success(true);

@@ -21,20 +21,20 @@ namespace AmazonBestSellersExplorer.WebAPI.Services
         public async Task<ServiceResult<User>> RegisterUserAsync(User user, string rawPassword)
         {
             if (string.IsNullOrWhiteSpace(user.Login) || user.Login.Length < 5 || user.Login.Length > 50)
-                return ServiceResult<User>.Failure("Login must be between 5 and 50 characters.");
+                return ServiceResult<User>.Failure("Login musi mieć pomiędzy 5 i 50 znaków.");
 
             if (!ValidationHelper.IsValidLoginCharacters(user.Login))
-                return ServiceResult<User>.Failure("Login can only contain letters and numbers.");
+                return ServiceResult<User>.Failure("Login może zawierać wyłącznie litery i cyfry.");
 
             if (string.IsNullOrWhiteSpace(rawPassword) || rawPassword.Length < 8)
-                return ServiceResult<User>.Failure("Password must be at least 8 characters.");
+                return ServiceResult<User>.Failure("Hasło musi mieć długość przynajmniej 8 znaków.");
 
             if (!ValidationHelper.IsValidPasswordComplexity(rawPassword))
-                return ServiceResult<User>.Failure("Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.");
+                return ServiceResult<User>.Failure("Hasło musi zawierać minimum 1: mała litera, wielka litera, cyfra, znak specjalny.");
 
             var exists = await _userRepository.ExistsByLoginAsync(user.Login);
             if (exists)
-                return ServiceResult<User>.Failure("Login already exists.");
+                return ServiceResult<User>.Failure("Login już istnieje.");
 
             user.PasswordHash = _passwordHasher.HashPassword(user, rawPassword);
 
@@ -45,15 +45,16 @@ namespace AmazonBestSellersExplorer.WebAPI.Services
         public async Task<ServiceResult<User>> AuthenticateUserAsync(string login, string rawPassword)
         {
             if (string.IsNullOrWhiteSpace(login) || string.IsNullOrWhiteSpace(rawPassword))
-                return ServiceResult<User>.Failure("Login and password required.");
+                return ServiceResult<User>.Failure("Login oraz hasło są wymagane.");
 
             var user = await _userRepository.GetByLoginAsync(login);
             if (user == null)
-                return ServiceResult<User>.Failure("Invalid credentials.");
+                return ServiceResult<User>.Failure("Nieprawidłowy login lub hasło.");// wysyłamy ogólny komunikat o błędzie zamiast wskazywać,
+                                                                                     // czy problem dotyczy loginu lub hasła
 
             var verify = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, rawPassword);
             if (verify == PasswordVerificationResult.Failed)
-                return ServiceResult<User>.Failure("Invalid credentials.");
+                return ServiceResult<User>.Failure("Nieprawidłowy login lub hasło."); 
 
             return ServiceResult<User>.Success(user);
         }

@@ -25,7 +25,7 @@ namespace AmazonBestSellersExplorer.WebAPI.Services.API
             var rapidKey = _configuration["RapidApi:Key"];
             if (string.IsNullOrEmpty(rapidHost) || string.IsNullOrEmpty(rapidKey))
             {
-                throw new InvalidOperationException("RapidApi:Host or RapidApi:Key is not configured.");
+                throw new InvalidOperationException("RapidApi:Host lub RapidApi:Key nie zostały skonfigurowane.");
             }
 
             var apiUrl = $"https://{rapidHost}/best-sellers?category=software&type=BEST_SELLERS&country=PL";
@@ -40,7 +40,7 @@ namespace AmazonBestSellersExplorer.WebAPI.Services.API
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new HttpRequestException($"API request failed with status code {response.StatusCode}: {content}");
+                throw new HttpRequestException($"Zapytanie API nie powiodło się z kodem błędu {response.StatusCode}: {content}");
             }
 
             return ParseAmazonResponse(content);

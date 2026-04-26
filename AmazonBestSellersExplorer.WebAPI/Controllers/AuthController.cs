@@ -54,7 +54,7 @@ namespace AmazonBestSellersExplorer.WebAPI.Controllers
 
         private JwtTokenResponse GenerateJwtToken(User user)
         {
-            var jwtKey = _configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key is not configured");
+            var jwtKey = _configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key nie został skonfigurowany.");
             var jwtIssuer = _configuration["Jwt:Issuer"];
             var jwtAudience = _configuration["Jwt:Audience"];
             var expiresMinutes = int.Parse(_configuration["Jwt:ExpiresMinutes"] ?? "60");

@@ -12,28 +12,23 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular", policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
+        policy.WithOrigins("http://localhost:4200") // adres klienta web
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
 
-// Use EF Core with SQLite (local file). Connection string from appsettings.json
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
 
-// Use ASP.NET Core Identity password hasher
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
-// Configure JWT authentication
-var jwtKey = builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key is not configured");
+var jwtKey = builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key nie został skonfigurowany.");
 var jwtIssuer = builder.Configuration["Jwt:Issuer"];
 var jwtAudience = builder.Configuration["Jwt:Audience"];
 
@@ -59,7 +54,6 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-// Register Repositories & Services
 builder.Services.AddScoped<IFavoriteProductRepository, FavoriteProductRepository>();
 builder.Services.AddScoped<IFavoriteProductService, FavoriteProductService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -75,21 +69,15 @@ else
     builder.Services.AddScoped<IAmazonApiService, AmazonApiService>();
 }
 
-// Add controllers (for API endpoints)
 builder.Services.AddControllers();
-// Register HttpClient factory so controllers can call external APIs
 builder.Services.AddHttpClient();
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-
 app.UseHttpsRedirection();
-
 app.UseCors("AllowAngular");
-
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Map controller routes
 app.MapControllers();
+
 app.Run();

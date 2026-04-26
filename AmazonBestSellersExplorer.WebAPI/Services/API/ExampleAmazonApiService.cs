@@ -22,13 +22,13 @@ namespace AmazonBestSellersExplorer.WebAPI.Services.API
             var exampleFilePath = _configuration["Amazon:ExampleFilePath"];
             if (string.IsNullOrWhiteSpace(exampleFilePath))
             {
-                throw new InvalidOperationException("Amazon:ExampleFilePath is not configured.");
+                throw new InvalidOperationException("Amazon:ExampleFilePath nie został skonfigurowany.");
             }
 
             var exampleFileFullPath = Path.Combine(Directory.GetCurrentDirectory(), "Resources", exampleFilePath);
             if (!File.Exists(exampleFileFullPath))
             {
-                throw new FileNotFoundException($"Example file not found: {exampleFileFullPath}");
+                throw new FileNotFoundException($"Nie znaleziono pliku przykładowego: {exampleFileFullPath}");
             }
 
             var content = await File.ReadAllTextAsync(exampleFileFullPath);
