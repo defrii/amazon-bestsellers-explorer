@@ -8,13 +8,13 @@
         <span *ngIf="loggedUser !== 'none'" class="user-greeting">
             <i class="pi pi-user"></i> {{ loggedUser }}
         </span>
-        <p-button *ngIf="loggedUser === 'none'" label="Login" icon="pi pi-sign-in" severity="secondary"
+        <p-button *ngIf="loggedUser === 'none'" label="Zaloguj" icon="pi pi-sign-in" severity="secondary"
             (onClick)="onLogin.emit()"></p-button>
-        <p-button *ngIf="loggedUser === 'none'" label="Register" icon="pi pi-user-plus"
+        <p-button *ngIf="loggedUser === 'none'" label="Zarejestruj" icon="pi pi-user-plus"
             (onClick)="onRegister.emit()"></p-button>
         <p-button *ngIf="loggedUser !== 'none'" label="Moje ulubione" icon="pi pi-heart-fill" severity="danger"
             [outlined]="!isFavorites" (onClick)="onFavorites.emit()"></p-button>
-        <p-button *ngIf="loggedUser !== 'none'" label="Logout" icon="pi pi-sign-out" severity="danger"
+        <p-button *ngIf="loggedUser !== 'none'" label="Wyloguj" icon="pi pi-sign-out" severity="danger"
             (onClick)="onLogout.emit()"></p-button>
     </div>
 </p-toolbar>

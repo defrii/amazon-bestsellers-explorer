@@ -1,6 +1,0 @@
-@AmazonBestSellersExplorer.WebAPI_HostAddress = http://localhost:5052
-
-GET {{AmazonBestSellersExplorer.WebAPI_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

@@ -1,33 +1,33 @@
 <div class="login-container">
   <div class="back-nav">
-    <p-button icon="pi pi-arrow-left" label="Back to Home" [text]="true" routerLink="/"></p-button>
+    <p-button icon="pi pi-arrow-left" label="Wróć do listy" [text]="true" routerLink="/"></p-button>
   </div>
-  <p-card styleClass="login-card shadow-4 border-round-xl">
+  <p-card styleClass="login-card shadow-6 border-round-xl" [style]="{'border-top': '5px solid var(--p-primary-color)'}">
     <ng-template #title>
       <div class="card-title">
         <i class="pi pi-user"></i>
-        Welcome Back
+        Witaj ponownie!
       </div>
     </ng-template>
 
     <form #loginForm="ngForm" (ngSubmit)="loginForm.valid && loginUser()">
       <div class="form-container">
         <div class="input-group">
-          <label for="login">Username</label>
+          <label for="login">Login</label>
           <input pInputText id="login" name="login" [(ngModel)]="login" required minlength="5" maxlength="50" class="w-full" />
         </div>
 
         <div class="input-group">
-          <label for="password">Password</label>
+          <label for="password">Hasło</label>
           <p-password id="password" name="password" [(ngModel)]="password" required [toggleMask]="true" [feedback]="false" styleClass="w-full" inputStyleClass="w-full"></p-password>
         </div>
 
         <p-message *ngIf="message()" severity="error" [text]="message()" styleClass="block w-full"></p-message>
 
-        <p-button type="submit" label="Sign In" icon="pi pi-sign-in" styleClass="w-full mt-2" [disabled]="!loginForm.valid || isLoading()" [loading]="isLoading()"></p-button>
+        <p-button type="submit" label="Zaloguj się" icon="pi pi-sign-in" styleClass="w-full mt-2" [disabled]="!loginForm.valid || isLoading()" [loading]="isLoading()"></p-button>
 
         <div class="register-link-container">
-          Don't have an account? <a routerLink="/register">Register</a>
+          Nie masz konta? <a routerLink="/register">Zarejestruj się</a>
         </div>
       </div>
     </form>

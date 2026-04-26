@@ -39,12 +39,11 @@ export class FavoritesComponent implements OnInit {
     this.favoritesService.getFavoriteDetails().subscribe({
       next: (items) => {
         this.products.set(items);
-        // Populate favoriteAsins from the loaded items
         const asins = new Set(items.map(i => i.asin!).filter(Boolean));
         this.favoritesService.favoriteAsins.set(asins);
       },
       error: (err) => {
-        this.error = 'Failed to load favorites';
+        this.error = 'Nie udało się załadować ulubionych produktów.';
         this.products.set([]);
         console.error(err);
       }
@@ -62,7 +61,6 @@ export class FavoritesComponent implements OnInit {
         newSet.delete(asin);
         this.favoritesService.favoriteAsins.set(newSet);
         this.favoritesService.isLoadingFavorite.set(null);
-        // Remove from local list immediately
         const updated = (this.products() ?? []).filter(p => p.asin !== asin);
         this.products.set(updated);
       },

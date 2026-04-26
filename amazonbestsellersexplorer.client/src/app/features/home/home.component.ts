@@ -59,7 +59,7 @@ export class HomeComponent implements OnInit {
         this.products.set(Array.isArray(resp) ? resp : []);
       },
       error: (err) => {
-        this.error = 'Failed to load products';
+        this.error = 'Nie udało się załadować produktów';
         this.products.set([]);
         console.error(err);
       }

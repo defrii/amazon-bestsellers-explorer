@@ -14,7 +14,7 @@
 
 :host ::ng-deep {
   .login-card {
-    width: 480px;
+    width: 550px;
     max-width: 90vw;
     margin-top: -5vh;
   }
@@ -50,6 +50,7 @@
   flex-direction: column;
   gap: 1.5rem;
   margin-top: 1rem;
+  padding: 1rem 0;
 }
 
 .input-group {

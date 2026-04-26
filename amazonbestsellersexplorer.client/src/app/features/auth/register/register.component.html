@@ -1,43 +1,43 @@
 <div class="register-container">
   <div class="back-nav">
-    <p-button icon="pi pi-arrow-left" label="Back to Home" [text]="true" routerLink="/"></p-button>
+    <p-button icon="pi pi-arrow-left" label="Wróć do listy" [text]="true" routerLink="/"></p-button>
   </div>
   <p-card styleClass="register-card shadow-6 border-round-xl" [style]="{'border-top': '5px solid var(--p-primary-color)'}">
     <ng-template #title>
       <div class="card-title">
         <i class="pi pi-user-plus"></i>
-        Create Account
+        Załóż konto
       </div>
     </ng-template>
 
     <form #registerForm="ngForm" (ngSubmit)="registerForm.valid && register()">
       <div class="form-container">
         <div class="input-group">
-          <label for="login">Username</label>
+          <label for="login">Login</label>
           <input pInputText id="login" name="login" [(ngModel)]="login" required minlength="5" maxlength="50" pattern="^[a-zA-Z0-9]+$" class="w-full" #loginCtrl="ngModel" />
           <small class="p-error block mt-1" *ngIf="loginCtrl.invalid && (loginCtrl.dirty || loginCtrl.touched)">
-            <span *ngIf="loginCtrl.errors?.['required']">Username is required. </span>
-            <span *ngIf="loginCtrl.errors?.['minlength']">Must be at least 5 characters. </span>
-            <span *ngIf="loginCtrl.errors?.['pattern']">Only letters and numbers are allowed.</span>
+            <span *ngIf="loginCtrl.errors?.['required']">Login jest wymagany. </span>
+            <span *ngIf="loginCtrl.errors?.['minlength']">Login musi zawierać przynajmniej 5 znaków. </span>
+            <span *ngIf="loginCtrl.errors?.['pattern']">Tylko litery i cyfry są dozwolone.</span>
           </small>
         </div>
 
         <div class="input-group">
-          <label for="password">Password</label>
+          <label for="password">Hasło</label>
           <p-password id="password" name="password" [(ngModel)]="password" required [minlength]="8" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$" [toggleMask]="true" [feedback]="false" styleClass="w-full" inputStyleClass="w-full" #passwordCtrl="ngModel"></p-password>
           <small class="p-error block mt-1" *ngIf="passwordCtrl.invalid && (passwordCtrl.dirty || passwordCtrl.touched)">
-            <span *ngIf="passwordCtrl.errors?.['required']">Password is required. </span>
-            <span *ngIf="passwordCtrl.errors?.['minlength']">Must be at least 8 characters. </span>
-            <span *ngIf="passwordCtrl.errors?.['pattern']">Must contain at least one uppercase letter, one lowercase letter, one number, and one special character.</span>
+            <span *ngIf="passwordCtrl.errors?.['required']">Hasło jest wymagane. </span>
+            <span *ngIf="passwordCtrl.errors?.['minlength']">Hasło musi zawierać przynajmniej 8 znaków. </span>
+            <span *ngIf="passwordCtrl.errors?.['pattern']">Hasło musi zawierać minimum jedną dużą i małą literę, cyfrę oraz znak specjalny.</span>
           </small>
         </div>
 
         <p-message *ngIf="message()" [severity]="message() === 'Registration successful' ? 'success' : 'error'" [text]="message()" styleClass="block w-full"></p-message>
 
-        <p-button type="submit" label="Register" icon="pi pi-check" styleClass="w-full mt-2" [disabled]="!registerForm.valid || isLoading()" [loading]="isLoading()"></p-button>
+        <p-button type="submit" label="Zarejestruj się" icon="pi pi-check" styleClass="w-full mt-2" [disabled]="!registerForm.valid || isLoading()" [loading]="isLoading()"></p-button>
 
         <div class="login-link-container">
-          Already have an account? <a routerLink="/login">Sign in</a>
+          Masz już konto? <a routerLink="/login">Zaloguj się</a>
         </div>
       </div>
     </form>

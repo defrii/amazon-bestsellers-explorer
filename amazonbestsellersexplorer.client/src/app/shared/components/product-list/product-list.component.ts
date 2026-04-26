@@ -18,7 +18,7 @@ export class ProductListComponent {
   @Input() isLoadingFavorite: string | null = null;
   @Input() loggedUser = 'none';
   @Input() error = '';
-  @Input() emptyMessage = 'No products found.';
+  @Input() emptyMessage = 'Nie znaleziono produktów.';
 
   @Output() toggleFavoriteAction = new EventEmitter<Product>();
 }
