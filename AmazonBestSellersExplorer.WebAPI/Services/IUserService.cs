@@ -1,11 +1,12 @@
 using System.Threading.Tasks;
 using AmazonBestSellersExplorer.WebAPI.Models;
+using AmazonBestSellersExplorer.WebAPI.Services.Core;
 
 namespace AmazonBestSellersExplorer.WebAPI.Services
 {
     public interface IUserService
     {
-        Task<User> RegisterUserAsync(User user, string rawPassword);
-        Task<User?> AuthenticateUserAsync(string login, string rawPassword);
+        Task<ServiceResult<User>> RegisterUserAsync(User user, string rawPassword);
+        Task<ServiceResult<User>> AuthenticateUserAsync(string login, string rawPassword);
     }
 }

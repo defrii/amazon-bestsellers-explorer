@@ -1,8 +1,8 @@
-using System;
 using System.Threading.Tasks;
 using AmazonBestSellersExplorer.WebAPI.Helpers;
 using AmazonBestSellersExplorer.WebAPI.Models;
 using AmazonBestSellersExplorer.WebAPI.Repositories;
+using AmazonBestSellersExplorer.WebAPI.Services.Core;
 using Microsoft.AspNetCore.Identity;
 
 namespace AmazonBestSellersExplorer.WebAPI.Services
@@ -18,43 +18,44 @@ namespace AmazonBestSellersExplorer.WebAPI.Services
             _passwordHasher = passwordHasher;
         }
 
-        public async Task<User> RegisterUserAsync(User user, string rawPassword)
+        public async Task<ServiceResult<User>> RegisterUserAsync(User user, string rawPassword)
         {
             if (string.IsNullOrWhiteSpace(user.Login) || user.Login.Length < 5 || user.Login.Length > 50)
-                throw new ArgumentException("Login must be between 5 and 50 characters.");
+                return ServiceResult<User>.Failure("Login must be between 5 and 50 characters.");
 
             if (!ValidationHelper.IsValidLoginCharacters(user.Login))
-                throw new ArgumentException("Login can only contain English letters, numbers, and special characters.");
+                return ServiceResult<User>.Failure("Login can only contain English letters, numbers, and special characters.");
 
             if (string.IsNullOrWhiteSpace(rawPassword) || rawPassword.Length < 8)
-                throw new ArgumentException("Password must be at least 8 characters.");
+                return ServiceResult<User>.Failure("Password must be at least 8 characters.");
 
             if (!ValidationHelper.IsValidPasswordComplexity(rawPassword))
-                throw new ArgumentException("Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.");
+                return ServiceResult<User>.Failure("Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character.");
 
             var exists = await _userRepository.ExistsByLoginAsync(user.Login);
             if (exists)
-                throw new InvalidOperationException("Login already exists.");
+                return ServiceResult<User>.Failure("Login already exists.");
 
             user.PasswordHash = _passwordHasher.HashPassword(user, rawPassword);
 
-            return await _userRepository.AddAsync(user);
+            var created = await _userRepository.AddAsync(user);
+            return ServiceResult<User>.Success(created);
         }
 
-        public async Task<User?> AuthenticateUserAsync(string login, string rawPassword)
+        public async Task<ServiceResult<User>> AuthenticateUserAsync(string login, string rawPassword)
         {
             if (string.IsNullOrWhiteSpace(login) || string.IsNullOrWhiteSpace(rawPassword))
-                throw new ArgumentException("Login and password required.");
+                return ServiceResult<User>.Failure("Login and password required.");
 
             var user = await _userRepository.GetByLoginAsync(login);
             if (user == null)
-                return null;
+                return ServiceResult<User>.Failure("Invalid credentials.");
 
             var verify = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, rawPassword);
             if (verify == PasswordVerificationResult.Failed)
-                return null;
+                return ServiceResult<User>.Failure("Invalid credentials.");
 
-            return user;
+            return ServiceResult<User>.Success(user);
         }
     }
 }

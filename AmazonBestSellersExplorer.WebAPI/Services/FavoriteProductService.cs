@@ -2,49 +2,50 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AmazonBestSellersExplorer.WebAPI.Models;
 using AmazonBestSellersExplorer.WebAPI.Repositories;
+using AmazonBestSellersExplorer.WebAPI.Services.Core;
 
 namespace AmazonBestSellersExplorer.WebAPI.Services
 {
     public class FavoriteProductService : IFavoriteProductService
     {
-        private readonly IFavoriteProductRepository _favoriteProductRepository;
+        private readonly IFavoriteProductRepository _repository;
 
-        public FavoriteProductService(IFavoriteProductRepository favoriteProductRepository)
+        public FavoriteProductService(IFavoriteProductRepository repository)
         {
-            _favoriteProductRepository = favoriteProductRepository;
+            _repository = repository;
         }
 
         public async Task<IEnumerable<string>> GetFavoriteAsinsAsync(int userId)
         {
-            return await _favoriteProductRepository.GetFavoriteAsinsAsync(userId);
+            return await _repository.GetFavoriteAsinsAsync(userId);
         }
 
         public async Task<IEnumerable<FavoriteProduct>> GetFavoriteDetailsAsync(int userId)
         {
-            return await _favoriteProductRepository.GetFavoritesAsync(userId);
+            return await _repository.GetFavoritesAsync(userId);
         }
 
-        public async Task<FavoriteProduct> AddFavoriteAsync(FavoriteProduct favoriteProduct)
+        public async Task<ServiceResult<FavoriteProduct>> AddFavoriteAsync(FavoriteProduct favoriteProduct)
         {
-            var exists = await _favoriteProductRepository.ExistsAsync(favoriteProduct.UserId, favoriteProduct.Asin);
+            var exists = await _repository.ExistsAsync(favoriteProduct.UserId, favoriteProduct.Asin);
 
             if (exists)
-                throw new System.InvalidOperationException("Product is already in favorites.");
+                return ServiceResult<FavoriteProduct>.Failure("Product is already in favorites.");
 
-            await _favoriteProductRepository.AddAsync(favoriteProduct);
+            await _repository.AddAsync(favoriteProduct);
 
-            return favoriteProduct;
+            return ServiceResult<FavoriteProduct>.Success(favoriteProduct);
         }
 
-        public async Task<bool> RemoveFavoriteAsync(int userId, string asin)
+        public async Task<ServiceResult<bool>> RemoveFavoriteAsync(int userId, string asin)
         {
-            var favorite = await _favoriteProductRepository.GetByAsinAsync(userId, asin);
+            var favorite = await _repository.GetByAsinAsync(userId, asin);
 
             if (favorite == null)
-                return false;
+                return ServiceResult<bool>.Failure("Favorite not found.");
 
-            await _favoriteProductRepository.RemoveAsync(favorite);
-            return true;
+            await _repository.RemoveAsync(favorite);
+            return ServiceResult<bool>.Success(true);
         }
     }
 }

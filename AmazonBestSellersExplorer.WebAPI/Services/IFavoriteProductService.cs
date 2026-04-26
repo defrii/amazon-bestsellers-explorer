@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AmazonBestSellersExplorer.WebAPI.Models;
+using AmazonBestSellersExplorer.WebAPI.Services.Core;
 
 namespace AmazonBestSellersExplorer.WebAPI.Services
 {
@@ -8,7 +9,7 @@ namespace AmazonBestSellersExplorer.WebAPI.Services
     {
         Task<IEnumerable<string>> GetFavoriteAsinsAsync(int userId);
         Task<IEnumerable<FavoriteProduct>> GetFavoriteDetailsAsync(int userId);
-        Task<FavoriteProduct> AddFavoriteAsync(FavoriteProduct favoriteProduct);
-        Task<bool> RemoveFavoriteAsync(int userId, string asin);
+        Task<ServiceResult<FavoriteProduct>> AddFavoriteAsync(FavoriteProduct favoriteProduct);
+        Task<ServiceResult<bool>> RemoveFavoriteAsync(int userId, string asin);
     }
 }

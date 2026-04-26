@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-using AmazonBestSellersExplorer.WebAPI.Models;
-using AmazonBestSellersExplorer.WebAPI.Services;
-using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
+using AmazonBestSellersExplorer.WebAPI.Models;
+using AmazonBestSellersExplorer.WebAPI.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AmazonBestSellersExplorer.WebAPI.Controllers
 {
@@ -40,65 +40,55 @@ namespace AmazonBestSellersExplorer.WebAPI.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
-            var user = new User { Login = dto.Login };
+            var result = await _userService.RegisterUserAsync(new User { Login = dto.Login }, dto.Password);
 
-            try
-            {
-                user = await _userService.RegisterUserAsync(user, dto.Password);
-                return CreatedAtAction(null, new { id = user.UserId }, new { userId = user.UserId, login = user.Login });
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return Conflict(ex.Message);
-            }
+            if (!result.IsSuccess)
+                return BadRequest(result.ErrorMessage);
+
+            var user = result.Value!;
+            return CreatedAtAction(null, new { id = user.UserId }, new { userId = user.UserId, login = user.Login });
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
-            try
+            var result = await _userService.AuthenticateUserAsync(dto.Login, dto.Password);
+
+            if (!result.IsSuccess)
+                return Unauthorized(result.ErrorMessage);
+
+            var user = result.Value!;
+            var tokenString = GenerateJwtToken(user);
+
+            return Ok(new { token = tokenString.TokenString, expires = tokenString.ValidTo, userId = user.UserId, login = user.Login });
+        }
+
+        private (string TokenString, DateTime ValidTo) GenerateJwtToken(User user)
+        {
+            var jwtKey = _configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key is not configured");
+            var jwtIssuer = _configuration["Jwt:Issuer"];
+            var jwtAudience = _configuration["Jwt:Audience"];
+            var expiresMinutes = int.Parse(_configuration["Jwt:ExpiresMinutes"] ?? "60");
+
+            var claims = new List<Claim>
             {
-                var user = await _userService.AuthenticateUserAsync(dto.Login, dto.Password);
-                
-                if (user == null)
-                    return Unauthorized("Invalid credentials");
+                new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
+                new Claim(JwtRegisteredClaimNames.Name, user.Login),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
 
-                // Create JWT
-                var jwtKey = _configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key is not configured");
-                var jwtIssuer = _configuration["Jwt:Issuer"];
-                var jwtAudience = _configuration["Jwt:Audience"];
-                var expiresMinutes = int.Parse(_configuration["Jwt:ExpiresMinutes"] ?? "60");
-                
-                var claims = new List<Claim>
-                {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
-                    new Claim(JwtRegisteredClaimNames.Name, user.Login),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                };
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
-                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken(
+                issuer: jwtIssuer,
+                audience: jwtAudience,
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(expiresMinutes),
+                signingCredentials: creds
+            );
 
-                var token = new JwtSecurityToken(
-                    issuer: jwtIssuer,
-                    audience: jwtAudience,
-                    claims: claims,
-                    expires: DateTime.UtcNow.AddMinutes(expiresMinutes),
-                    signingCredentials: creds
-                );
-
-                var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-
-                return Ok(new { token = tokenString, expires = token.ValidTo, userId = user.UserId, login = user.Login });
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return (new JwtSecurityTokenHandler().WriteToken(token), token.ValidTo);
         }
     }
 }
