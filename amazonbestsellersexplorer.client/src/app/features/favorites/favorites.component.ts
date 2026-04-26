@@ -75,6 +75,6 @@ export class FavoritesComponent implements OnInit {
   logout() {
     localStorage.removeItem('jwt');
     localStorage.removeItem('login');
-    this.router.navigate(['/login']);
+    this.router.navigate(['/']);
   }
 }
