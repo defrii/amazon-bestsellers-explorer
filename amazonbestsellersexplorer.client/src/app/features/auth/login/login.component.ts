@@ -26,34 +26,27 @@ import { MessageModule } from 'primeng/message';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  login = '';
-  password = '';
+  login = signal('');
+  password = signal('');
   message = signal('');
   isLoading = signal(false);
-  private loadingTimeout: any;
 
   constructor(private http: HttpClient, private router: Router) {}
 
   loginUser() {
     this.message.set('');
-    clearTimeout(this.loadingTimeout);
-    this.loadingTimeout = setTimeout(() => this.isLoading.set(true), 300);
-    const payload = { login: this.login, password: this.password };
-    this.http.post('/api/auth/login', payload).subscribe({
+    this.http.post('/api/auth/login', { login: this.login(), password: this.password() }).subscribe({
       next: (res: any) => {
-        clearTimeout(this.loadingTimeout);
         this.isLoading.set(false);
         if (res?.token) {
           localStorage.setItem('jwt', res.token);
           if (res.login) localStorage.setItem('login', res.login);
-          // redirect to home
           this.router.navigate(['/']);
         } else {
           this.message.set('Login succeeded, but no token received.');
         }
       },
       error: (err) => {
-        clearTimeout(this.loadingTimeout);
         this.isLoading.set(false);
         if (typeof err?.error === 'string') {
           this.message.set(err.error);
