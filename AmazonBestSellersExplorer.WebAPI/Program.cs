@@ -4,6 +4,7 @@ using AmazonBestSellersExplorer.WebAPI.Data;
 using AmazonBestSellersExplorer.WebAPI.Models;
 using AmazonBestSellersExplorer.WebAPI.Repositories;
 using AmazonBestSellersExplorer.WebAPI.Services;
+using AmazonBestSellersExplorer.WebAPI.Services.API;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -63,6 +64,16 @@ builder.Services.AddScoped<IFavoriteProductRepository, FavoriteProductRepository
 builder.Services.AddScoped<IFavoriteProductService, FavoriteProductService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+
+var useExampleAmazonApi = builder.Configuration.GetValue<bool>("Amazon:UseExampleFile");
+if (useExampleAmazonApi)
+{
+    builder.Services.AddScoped<IAmazonApiService, ExampleAmazonApiService>();
+}
+else
+{
+    builder.Services.AddScoped<IAmazonApiService, AmazonApiService>();
+}
 
 // Add controllers (for API endpoints)
 builder.Services.AddControllers();

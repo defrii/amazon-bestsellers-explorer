@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using AmazonBestSellersExplorer.WebAPI.Helpers;
 using AmazonBestSellersExplorer.WebAPI.Models;
 using AmazonBestSellersExplorer.WebAPI.Services;
 using System.Security.Claims;
@@ -93,11 +94,9 @@ namespace AmazonBestSellersExplorer.WebAPI.Controllers
                 double parsedRating = 0;
                 if (!string.IsNullOrWhiteSpace(dto.StarRating))
                 {
-                    var ratingMatch = System.Text.RegularExpressions.Regex.Match(dto.StarRating, @"([0-9.]+)");
-                    if (ratingMatch.Success)
-                    {
-                        double.TryParse(ratingMatch.Groups[1].Value, NumberStyles.Any, CultureInfo.InvariantCulture, out parsedRating);
-                    }
+                    var numberStr = ValidationHelper.ExtractFirstNumber(dto.StarRating);
+                    if (numberStr != null)
+                        double.TryParse(numberStr, NumberStyles.Any, CultureInfo.InvariantCulture, out parsedRating);
                 }
 
                 var favorite = new FavoriteProduct
