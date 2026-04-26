@@ -12,80 +12,25 @@
             (onClick)="goLogin()"></p-button>
         <p-button *ngIf="loggedUser === 'none'" label="Register" icon="pi pi-user-plus"
             (onClick)="goRegister()"></p-button>
+        <p-button *ngIf="loggedUser !== 'none'" label="Moje ulubione" icon="pi pi-heart-fill" severity="danger"
+            [outlined]="true" (onClick)="goFavorites()"></p-button>
         <p-button *ngIf="loggedUser !== 'none'" label="Logout" icon="pi pi-sign-out" severity="danger"
             (onClick)="logout()"></p-button>
     </div>
 </p-toolbar>
 
 <div class="home-container">
-    <div *ngIf="products() === null" class="loading-container">
-        <p-progressSpinner></p-progressSpinner>
-    </div>
-
-    <div *ngIf="error" class="error-container">
-        <i class="pi pi-exclamation-triangle"></i> {{ error }}
-    </div>
-
     <div class="page-header" *ngIf="products()?.length">
         <h1 class="page-title">Przeglądaj bestsellery Amazona z kategorii Software</h1>
         <p class="page-subtitle">Odkryj najpopularniejsze i najlepiej oceniane programy</p>
     </div>
 
-    <p-dataView *ngIf="products()?.length" #dv [value]="products()!" [rows]="12" [paginator]="true" layout="grid">
-        <ng-template #grid let-items>
-            <div class="product-grid">
-                <div *ngFor="let p of items" class="product-grid-item">
-                    <p-card [styleClass]="'product-card shadow-2 hover:shadow-4 transition-all transition-duration-300' + (favoriteAsins().has(p.asin!) ? ' favorite-card' : '')">
-                        <div class="product-header">
-                            <img *ngIf="p.photo" [src]="p.photo" alt="img" class="product-image" />
-                            <div *ngIf="!p.photo" class="product-image-placeholder">
-                                <i class="pi pi-image"></i>
-                            </div>
-                        </div>
-                        <div class="product-content">
-                            <div class="product-title" [title]="p.title">
-                                {{ p.title || 'No title' }}
-                            </div>
-                            <div class="product-details">
-                                <div class="product-price">
-                                    {{ p.price || 'N/A' }}
-                                </div>
-                                <div class="product-rating">
-                                    <div class="custom-rating" [title]="p.starRating">
-                                        <div class="stars-outer">
-                                            <i class="pi pi-star" *ngFor="let i of [1,2,3,4,5]"></i>
-                                            <div class="stars-inner" [style.width.%]="parseRating(p.starRating) / 5 * 100">
-                                                <i class="pi pi-star-fill" *ngFor="let i of [1,2,3,4,5]"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <span class="rating-text">
-                                        Ocena: {{ p.starRating || 'Brak' }}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <ng-template pTemplate="footer">
-                            <div class="footer-actions">
-                                <p-button label="Zobacz w Amazon" icon="pi pi-amazon" (onClick)="openUrl(p.url)" [disabled]="!p.url" severity="contrast" styleClass="w-full"></p-button>
-                                <p-button *ngIf="loggedUser !== 'none'"
-                                          [label]="favoriteAsins().has(p.asin!) ? 'Usuń z ulubionych' : 'Dodaj do ulubionych'" 
-                                          [icon]="favoriteAsins().has(p.asin!) ? 'pi pi-heart-fill' : 'pi pi-heart'" 
-                                          severity="danger"
-                                          [outlined]="!favoriteAsins().has(p.asin!)"
-                                          (onClick)="toggleFavorite(p)" 
-                                          [loading]="isLoadingFavorite() === p.asin"
-                                          styleClass="w-full"></p-button>
-                            </div>
-                        </ng-template>
-                    </p-card>
-                </div>
-            </div>
-        </ng-template>
-    </p-dataView>
-
-    <div *ngIf="products() !== null && !products()?.length && !error" class="empty-state">
-        <i class="pi pi-inbox"></i>
-        <span>No products found.</span>
-    </div>
+    <app-product-list
+        [products]="products()"
+        [favoriteAsins]="favoritesService.favoriteAsins()"
+        [isLoadingFavorite]="favoritesService.isLoadingFavorite()"
+        [loggedUser]="loggedUser"
+        [error]="error"
+        (toggleFavoriteAction)="favoritesService.toggleFavorite($event)">
+    </app-product-list>
 </div>

@@ -1,14 +1,19 @@
-/* Styles for HomeComponent */
 .toolbar-title {
     margin: 0;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    color: var(--p-primary-color);
+    color: var(--p-red-500, #ef4444);
 
     i {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
     }
+}
+
+.toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
 }
 
 .toolbar-actions {
@@ -25,7 +30,16 @@
     gap: 0.5rem;
 }
 
-.home-container {
+:host ::ng-deep {
+    .p-toolbar {
+        border-radius: 0;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+    }
+}
+
+.favorites-container {
     padding: 2rem;
     max-width: 1600px;
     margin: 0 auto;
@@ -48,13 +62,4 @@
     font-size: 1.1rem;
     color: var(--p-text-color-secondary);
     margin: 0;
-}
-
-:host ::ng-deep {
-    .p-toolbar {
-        border-radius: 0;
-        border-top: none;
-        border-left: none;
-        border-right: none;
-    }
 }

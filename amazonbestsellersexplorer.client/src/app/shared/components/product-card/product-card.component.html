@@ -1,0 +1,44 @@
+<p-card [styleClass]="'product-card shadow-2 hover:shadow-4 transition-all transition-duration-300' + (isFavorite ? ' favorite-card' : '')">
+    <div class="product-header">
+        <img *ngIf="product.photo" [src]="product.photo" alt="img" class="product-image" />
+        <div *ngIf="!product.photo" class="product-image-placeholder">
+            <i class="pi pi-image"></i>
+        </div>
+    </div>
+    <div class="product-content">
+        <div class="product-title" [title]="product.title ?? ''">
+            {{ product.title || 'No title' }}
+        </div>
+        <div class="product-details">
+            <div class="product-price">
+                {{ product.price || 'N/A' }}
+            </div>
+            <div class="product-rating">
+                <div class="custom-rating" [title]="product.starRating ?? ''">
+                    <div class="stars-outer">
+                        <i class="pi pi-star" *ngFor="let i of [1,2,3,4,5]"></i>
+                        <div class="stars-inner" [style.width.%]="parseRating(product.starRating) / 5 * 100">
+                            <i class="pi pi-star-fill" *ngFor="let i of [1,2,3,4,5]"></i>
+                        </div>
+                    </div>
+                </div>
+                <span class="rating-text">
+                    Ocena: {{ product.starRating || 'Brak' }}
+                </span>
+            </div>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <div class="footer-actions">
+            <p-button label="Zobacz w Amazon" icon="pi pi-amazon" (onClick)="openUrl(product.url)" [disabled]="!product.url" severity="contrast" styleClass="w-full"></p-button>
+            <p-button *ngIf="loggedUser !== 'none'"
+                      [label]="isFavorite ? 'Usuń z ulubionych' : 'Dodaj do ulubionych'"
+                      [icon]="isFavorite ? 'pi pi-heart-fill' : 'pi pi-heart'"
+                      severity="danger"
+                      [outlined]="!isFavorite"
+                      (onClick)="toggleFavoriteAction.emit(product)"
+                      [loading]="isLoadingFavorite === product.asin"
+                      styleClass="w-full"></p-button>
+        </div>
+    </ng-template>
+</p-card>

@@ -1,0 +1,31 @@
+<p-toolbar>
+    <div class="p-toolbar-group-start toolbar-left">
+        <p-button icon="pi pi-arrow-left" severity="secondary" [text]="true" (onClick)="goHome()" title="Wróć do katalogu"></p-button>
+        <h2 class="toolbar-title">
+            <i class="pi pi-heart-fill"></i> Moje ulubione
+        </h2>
+    </div>
+    <div class="p-toolbar-group-end toolbar-actions">
+        <span class="user-greeting">
+            <i class="pi pi-user"></i> {{ loggedUser }}
+        </span>
+        <p-button label="Logout" icon="pi pi-sign-out" severity="danger" (onClick)="logout()"></p-button>
+    </div>
+</p-toolbar>
+
+<div class="favorites-container">
+    <div class="page-header">
+        <h1 class="page-title">Moje ulubione produkty</h1>
+        <p class="page-subtitle">Twoje zapisane bestsellery Amazona</p>
+    </div>
+
+    <app-product-list
+        [products]="products()"
+        [favoriteAsins]="favoritesService.favoriteAsins()"
+        [isLoadingFavorite]="favoritesService.isLoadingFavorite()"
+        [loggedUser]="loggedUser"
+        [error]="error"
+        emptyMessage="Nie masz jeszcze żadnych ulubionych produktów."
+        (toggleFavoriteAction)="handleToggle($event)">
+    </app-product-list>
+</div>

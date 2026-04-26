@@ -49,6 +49,33 @@ namespace AmazonBestSellersExplorer.WebAPI.Controllers
             }
         }
 
+        [HttpGet("details")]
+        public async Task<IActionResult> GetFavoriteDetails()
+        {
+            try
+            {
+                var userId = GetCurrentUserId();
+                var favorites = await _db.FavoriteProducts
+                    .Where(f => f.UserId == userId)
+                    .Select(f => new FavoriteProductDto
+                    {
+                        Asin = f.Asin,
+                        Title = f.Title,
+                        Price = f.Price > 0 ? f.Price.ToString("F2", CultureInfo.InvariantCulture) : null,
+                        Url = f.Url,
+                        Photo = f.Photo,
+                        StarRating = f.StarRating.HasValue ? f.StarRating.Value.ToString(CultureInfo.InvariantCulture) : null
+                    })
+                    .ToListAsync();
+
+                return Ok(favorites);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Unauthorized();
+            }
+        }
+
         public class FavoriteProductDto
         {
             public string Title { get; set; } = null!;

@@ -1,0 +1,28 @@
+<div *ngIf="products === null" class="loading-container">
+    <p-progressSpinner></p-progressSpinner>
+</div>
+
+<div *ngIf="error" class="error-container">
+    <i class="pi pi-exclamation-triangle"></i> {{ error }}
+</div>
+
+<p-dataView *ngIf="products !== null && products.length" [value]="products" [rows]="12" [paginator]="true" layout="grid">
+    <ng-template #grid let-items>
+        <div class="product-grid">
+            <div *ngFor="let p of items" class="product-grid-item">
+                <app-product-card
+                    [product]="p"
+                    [isFavorite]="favoriteAsins.has(p.asin!)"
+                    [isLoadingFavorite]="isLoadingFavorite"
+                    [loggedUser]="loggedUser"
+                    (toggleFavoriteAction)="toggleFavoriteAction.emit($event)">
+                </app-product-card>
+            </div>
+        </div>
+    </ng-template>
+</p-dataView>
+
+<div *ngIf="products !== null && !products.length && !error" class="empty-state">
+    <i class="pi pi-inbox"></i>
+    <span>{{ emptyMessage }}</span>
+</div>
