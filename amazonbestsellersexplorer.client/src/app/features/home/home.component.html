@@ -35,7 +35,7 @@
         <ng-template #grid let-items>
             <div class="product-grid">
                 <div *ngFor="let p of items" class="product-grid-item">
-                    <p-card styleClass="product-card shadow-2 hover:shadow-4 transition-all transition-duration-300">
+                    <p-card [styleClass]="'product-card shadow-2 hover:shadow-4 transition-all transition-duration-300' + (favoriteAsins().has(p.asin!) ? ' favorite-card' : '')">
                         <div class="product-header">
                             <img *ngIf="p.photo" [src]="p.photo" alt="img" class="product-image" />
                             <div *ngIf="!p.photo" class="product-image-placeholder">
@@ -51,15 +51,32 @@
                                     {{ p.price || 'N/A' }}
                                 </div>
                                 <div class="product-rating">
-                                    <p-rating [ngModel]="parseRating(p.starRating)" [readonly]="true"></p-rating>
+                                    <div class="custom-rating" [title]="p.starRating">
+                                        <div class="stars-outer">
+                                            <i class="pi pi-star" *ngFor="let i of [1,2,3,4,5]"></i>
+                                            <div class="stars-inner" [style.width.%]="parseRating(p.starRating) / 5 * 100">
+                                                <i class="pi pi-star-fill" *ngFor="let i of [1,2,3,4,5]"></i>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <span class="rating-text">
-                                        {{ p.starRating || 'No rating' }}
+                                        Ocena: {{ p.starRating || 'Brak' }}
                                     </span>
                                 </div>
                             </div>
                         </div>
                         <ng-template pTemplate="footer">
-                            <p-button label="Zobacz w Amazon" icon="pi pi-amazon" (onClick)="openUrl(p.url)" [disabled]="!p.url" styleClass="w-full"></p-button>
+                            <div class="footer-actions">
+                                <p-button label="Zobacz w Amazon" icon="pi pi-amazon" (onClick)="openUrl(p.url)" [disabled]="!p.url" severity="contrast" styleClass="w-full"></p-button>
+                                <p-button *ngIf="loggedUser !== 'none'"
+                                          [label]="favoriteAsins().has(p.asin!) ? 'Usuń z ulubionych' : 'Dodaj do ulubionych'" 
+                                          [icon]="favoriteAsins().has(p.asin!) ? 'pi pi-heart-fill' : 'pi pi-heart'" 
+                                          severity="danger"
+                                          [outlined]="!favoriteAsins().has(p.asin!)"
+                                          (onClick)="toggleFavorite(p)" 
+                                          [loading]="isLoadingFavorite() === p.asin"
+                                          styleClass="w-full"></p-button>
+                            </div>
                         </ng-template>
                     </p-card>
                 </div>
