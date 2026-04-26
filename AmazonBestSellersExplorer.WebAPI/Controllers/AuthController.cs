@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AmazonBestSellersExplorer.WebAPI.Models;
 using AmazonBestSellersExplorer.WebAPI.Services;
+using AmazonBestSellersExplorer.WebAPI.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -25,22 +26,10 @@ namespace AmazonBestSellersExplorer.WebAPI.Controllers
             _configuration = configuration;
         }
 
-        public class RegisterDto
-        {
-            public string Login { get; set; } = string.Empty;
-            public string Password { get; set; } = string.Empty;
-        }
-
-        public class LoginDto
-        {
-            public string Login { get; set; } = string.Empty;
-            public string Password { get; set; } = string.Empty;
-        }
-
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDto dto)
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
-            var result = await _userService.RegisterUserAsync(new User { Login = dto.Login }, dto.Password);
+            var result = await _userService.RegisterUserAsync(new User { Login = request.Login }, request.Password);
 
             if (!result.IsSuccess)
                 return BadRequest(result.ErrorMessage);
@@ -50,20 +39,20 @@ namespace AmazonBestSellersExplorer.WebAPI.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDto dto)
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            var result = await _userService.AuthenticateUserAsync(dto.Login, dto.Password);
+            var result = await _userService.AuthenticateUserAsync(request.Login, request.Password);
 
             if (!result.IsSuccess)
                 return Unauthorized(result.ErrorMessage);
 
             var user = result.Value!;
-            var tokenString = GenerateJwtToken(user);
+            var tokenResponse = GenerateJwtToken(user);
 
-            return Ok(new { token = tokenString.TokenString, expires = tokenString.ValidTo, userId = user.UserId, login = user.Login });
+            return Ok(new { token = tokenResponse.Token, expires = tokenResponse.Expires, userId = user.UserId, login = user.Login });
         }
 
-        private (string TokenString, DateTime ValidTo) GenerateJwtToken(User user)
+        private JwtTokenResponse GenerateJwtToken(User user)
         {
             var jwtKey = _configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key is not configured");
             var jwtIssuer = _configuration["Jwt:Issuer"];
@@ -88,7 +77,11 @@ namespace AmazonBestSellersExplorer.WebAPI.Controllers
                 signingCredentials: creds
             );
 
-            return (new JwtSecurityTokenHandler().WriteToken(token), token.ValidTo);
+            return new JwtTokenResponse
+            {
+                Token = new JwtSecurityTokenHandler().WriteToken(token),
+                Expires = token.ValidTo
+            };
         }
     }
 }

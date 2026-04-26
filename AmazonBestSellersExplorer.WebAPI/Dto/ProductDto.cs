@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace AmazonBestSellersExplorer.WebAPI.Models
+namespace AmazonBestSellersExplorer.WebAPI.Dto
 {
     public class ProductDto
     {

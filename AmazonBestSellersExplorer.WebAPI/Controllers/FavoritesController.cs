@@ -6,6 +6,7 @@ using AmazonBestSellersExplorer.WebAPI.Services;
 using System.Security.Claims;
 using System.Globalization;
 using System.Linq;
+using AmazonBestSellersExplorer.WebAPI.Dto;
 
 namespace AmazonBestSellersExplorer.WebAPI.Controllers
 {
