@@ -1,3 +1,10 @@
+:host {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: block;
+}
+
 .toolbar-title {
     margin: 0;
     display: flex;
@@ -8,6 +15,13 @@
     i {
         font-size: 1.5rem;
     }
+}
+
+.navbar-logo {
+    height: 45px;
+    width: auto;
+    object-fit: contain;
+    padding: 2px 0;
 }
 
 .toolbar-actions {

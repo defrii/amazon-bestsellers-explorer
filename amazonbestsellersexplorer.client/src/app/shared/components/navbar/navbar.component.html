@@ -1,8 +1,6 @@
 <p-toolbar>
     <div class="p-toolbar-group-start">
-        <h2 class="toolbar-title">
-            Amazon BestSellers Explorer
-        </h2>
+        <img src="logo.png" alt="Amazon BestSellers Explorer" class="navbar-logo" />
     </div>
     <div class="p-toolbar-group-end toolbar-actions">
         <span *ngIf="loggedUser !== 'none'" class="user-greeting">
@@ -14,7 +12,7 @@
             (onClick)="onRegister.emit()"></p-button>
         <p-button *ngIf="loggedUser !== 'none'" label="Moje ulubione" icon="pi pi-heart-fill" severity="danger"
             [outlined]="!isFavorites" (onClick)="onFavorites.emit()"></p-button>
-        <p-button *ngIf="loggedUser !== 'none'" label="Wyloguj" icon="pi pi-sign-out" severity="danger"
+        <p-button *ngIf="loggedUser !== 'none'" label="Wyloguj" icon="pi pi-sign-out"
             (onClick)="onLogout.emit()"></p-button>
     </div>
 </p-toolbar>
