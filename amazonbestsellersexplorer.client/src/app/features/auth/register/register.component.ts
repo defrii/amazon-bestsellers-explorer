@@ -26,22 +26,19 @@ import { MessageModule } from 'primeng/message';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent {
-  login = '';
-  password = '';
-  message = '';
+  login = signal('');
+  password = signal('');
+  message = signal('');
   isLoading = signal(false);
 
   constructor(private http: HttpClient, private router: Router) {}
 
   register() {
-    this.message = '';
+    this.message.set('');
     this.isLoading.set(true);
-    const payload = { login: this.login, password: this.password };
-    this.http.post('/api/auth/register', payload).subscribe({
+    this.http.post('/api/auth/register', { login: this.login(), password: this.password() }).subscribe({
       next: (res: any) => {
-        // Attempt to login automatically after registering
-        const payload = { login: this.login, password: this.password };
-        this.http.post('/api/auth/login', payload).subscribe({
+        this.http.post('/api/auth/login', { login: this.login(), password: this.password() }).subscribe({
           next: (loginRes: any) => {
             this.isLoading.set(false);
             if (loginRes?.token) {
@@ -52,22 +49,20 @@ export class RegisterComponent {
           },
           error: () => {
             this.isLoading.set(false);
-            // Even if auto-login fails, redirect to home
             this.router.navigate(['/']);
           }
         });
       },
       error: (err) => {
         this.isLoading.set(false);
-        // Try to show server message if available
         if (typeof err?.error === 'string') {
-          this.message = err.error;
+          this.message.set(err.error);
         } else if (err?.error?.message) {
-          this.message = err.error.message;
+          this.message.set(err.error.message);
         } else if (err?.error?.title) {
-          this.message = err.error.title;
+          this.message.set(err.error.title);
         } else {
-          this.message = err?.statusText || 'Registration failed';
+          this.message.set(err?.statusText || 'Registration failed');
         }
       }
     });

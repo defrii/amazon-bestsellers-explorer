@@ -24,7 +24,7 @@ namespace AmazonBestSellersExplorer.WebAPI.Services
                 return ServiceResult<User>.Failure("Login must be between 5 and 50 characters.");
 
             if (!ValidationHelper.IsValidLoginCharacters(user.Login))
-                return ServiceResult<User>.Failure("Login can only contain English letters, numbers, and special characters.");
+                return ServiceResult<User>.Failure("Login can only contain letters and numbers.");
 
             if (string.IsNullOrWhiteSpace(rawPassword) || rawPassword.Length < 8)
                 return ServiceResult<User>.Failure("Password must be at least 8 characters.");

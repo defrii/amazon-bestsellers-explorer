@@ -4,7 +4,7 @@ namespace AmazonBestSellersExplorer.WebAPI.Helpers
 {
     public static partial class ValidationHelper
     {
-        [GeneratedRegex(@"^[a-zA-Z0-9!@#\$%\^&\*\(\)_\+\-\=\[\]\{\}\|;:'"",\.<>\/\?\`~]+$", RegexOptions.Compiled)]
+        [GeneratedRegex(@"^[a-zA-Z0-9]+$", RegexOptions.Compiled)]
         private static partial Regex LoginCharactersRegex();
 
         [GeneratedRegex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$", RegexOptions.Compiled)]

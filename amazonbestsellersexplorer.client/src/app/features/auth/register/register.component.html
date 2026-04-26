@@ -14,11 +14,11 @@
       <div class="form-container">
         <div class="input-group">
           <label for="login">Username</label>
-          <input pInputText id="login" name="login" [(ngModel)]="login" required minlength="5" maxlength="50" pattern="^[a-zA-Z0-9!@#\$%\^&\*\(\)_\+\-\=\[\]\{\}\|;:'&quot;,\.<>\/\?\`~]+$" class="w-full" #loginCtrl="ngModel" />
+          <input pInputText id="login" name="login" [(ngModel)]="login" required minlength="5" maxlength="50" pattern="^[a-zA-Z0-9]+$" class="w-full" #loginCtrl="ngModel" />
           <small class="p-error block mt-1" *ngIf="loginCtrl.invalid && (loginCtrl.dirty || loginCtrl.touched)">
             <span *ngIf="loginCtrl.errors?.['required']">Username is required. </span>
             <span *ngIf="loginCtrl.errors?.['minlength']">Must be at least 5 characters. </span>
-            <span *ngIf="loginCtrl.errors?.['pattern']">Only English letters, numbers, and special characters allowed.</span>
+            <span *ngIf="loginCtrl.errors?.['pattern']">Only letters and numbers are allowed.</span>
           </small>
         </div>
 
@@ -32,7 +32,7 @@
           </small>
         </div>
 
-        <p-message *ngIf="message" [severity]="message === 'Registration successful' ? 'success' : 'error'" [text]="message" styleClass="block w-full"></p-message>
+        <p-message *ngIf="message()" [severity]="message() === 'Registration successful' ? 'success' : 'error'" [text]="message()" styleClass="block w-full"></p-message>
 
         <p-button type="submit" label="Register" icon="pi pi-check" styleClass="w-full mt-2" [disabled]="!registerForm.valid || isLoading()" [loading]="isLoading()"></p-button>
 
