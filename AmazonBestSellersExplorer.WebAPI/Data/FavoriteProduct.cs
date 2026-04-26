@@ -1,10 +1,10 @@
-﻿namespace AmazonBestSellersExplorer.WebAPI.Models
+namespace AmazonBestSellersExplorer.WebAPI.Models
 {
     public class FavoriteProduct
     {
         public int FavoriteProductId { get; set; }
         public string Title { get; set; } = null!;
-        public decimal Price { get; set; }
+        public string? Price { get; set; }
         public string Asin { get; set; } = string.Empty;
         public string? Url { get; set; }
         public string? Photo { get; set; }

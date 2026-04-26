@@ -60,7 +60,7 @@ namespace AmazonBestSellersExplorer.WebAPI.Controllers
             {
                 Asin = f.Asin,
                 Title = f.Title,
-                Price = f.Price > 0 ? f.Price.ToString("F2", CultureInfo.InvariantCulture) : null,
+                Price = f.Price,
                 Url = f.Url,
                 Photo = f.Photo,
                 StarRating = f.StarRating.HasValue ? f.StarRating.Value.ToString(CultureInfo.InvariantCulture) : null
@@ -79,14 +79,6 @@ namespace AmazonBestSellersExplorer.WebAPI.Controllers
             if (string.IsNullOrWhiteSpace(dto.Asin) || string.IsNullOrWhiteSpace(dto.Title))
                 return BadRequest("ASIN i tytuł są wymagane.");
 
-            decimal parsedPrice = 0;
-            if (!string.IsNullOrWhiteSpace(dto.Price))
-            {
-                var priceString = new string(dto.Price.Where(c => char.IsDigit(c) || c == '.' || c == ',').ToArray());
-                priceString = priceString.Replace(',', '.');
-                decimal.TryParse(priceString, NumberStyles.Any, CultureInfo.InvariantCulture, out parsedPrice);
-            }
-
             double parsedRating = 0;
             if (!string.IsNullOrWhiteSpace(dto.StarRating))
             {
@@ -100,7 +92,7 @@ namespace AmazonBestSellersExplorer.WebAPI.Controllers
                 UserId = userId.Value,
                 Asin = dto.Asin,
                 Title = dto.Title,
-                Price = parsedPrice,
+                Price = dto.Price,
                 Url = dto.Url,
                 Photo = dto.Photo,
                 StarRating = parsedRating > 0 ? parsedRating : null

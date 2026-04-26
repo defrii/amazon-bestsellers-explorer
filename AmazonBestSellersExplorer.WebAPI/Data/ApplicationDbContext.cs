@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using AmazonBestSellersExplorer.WebAPI.Models;
 
 namespace AmazonBestSellersExplorer.WebAPI.Data
@@ -31,7 +31,7 @@ namespace AmazonBestSellersExplorer.WebAPI.Data
             {
                 eb.HasKey(fp => fp.FavoriteProductId);
                 eb.Property(fp => fp.Title).IsRequired();
-                eb.Property(fp => fp.Price).HasPrecision(18, 2);
+                eb.Property(fp => fp.Price);
                 eb.Property(fp => fp.Asin).IsRequired().HasMaxLength(20);
             });
         }
