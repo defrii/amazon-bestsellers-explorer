@@ -10,18 +10,18 @@ export class FavoritesService {
   constructor(private http: HttpClient) {}
 
   loadFavoriteAsins() {
-    this.http.get<string[]>('/api/favorites').subscribe({
+    this.http.get<string[]>('/api/amazon/favorites').subscribe({
       next: (asins) => this.favoriteAsins.set(new Set(asins)),
       error: (err) => console.error('Failed to load favorites', err)
     });
   }
 
   getFavoriteDetails() {
-    return this.http.get<Product[]>('/api/favorites/details');
+    return this.http.get<Product[]>('/api/amazon/favorites/details');
   }
 
   removeFavorite(asin: string) {
-    return this.http.delete(`/api/favorites/${asin}`);
+    return this.http.delete(`/api/amazon/favorites/${asin}`);
   }
 
   toggleFavorite(product: Product) {
@@ -31,7 +31,7 @@ export class FavoritesService {
     const isFavorite = this.favoriteAsins().has(product.asin);
 
     if (isFavorite) {
-      this.http.delete(`/api/favorites/${product.asin}`).subscribe({
+      this.http.delete(`/api/amazon/favorites/${product.asin}`).subscribe({
         next: () => {
           const newSet = new Set(this.favoriteAsins());
           newSet.delete(product.asin!);
@@ -44,7 +44,7 @@ export class FavoritesService {
         }
       });
     } else {
-      this.http.post('/api/favorites', product).subscribe({
+      this.http.post('/api/amazon/favorites', product).subscribe({
         next: () => {
           const newSet = new Set(this.favoriteAsins());
           newSet.add(product.asin!);
