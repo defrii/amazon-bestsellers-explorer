@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private http: HttpClient,
     public favoritesService: FavoritesService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadProducts();

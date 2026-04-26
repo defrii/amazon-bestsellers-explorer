@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using AmazonBestSellersExplorer.WebAPI.Dto;
 using AmazonBestSellersExplorer.WebAPI.Models;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 
 namespace AmazonBestSellersExplorer.WebAPI.Services.API
@@ -12,15 +13,26 @@ namespace AmazonBestSellersExplorer.WebAPI.Services.API
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
+        private readonly IMemoryCache _cache;
+        private const string CacheKey = "AmazonBestSellers";
+        private const int DefaultCacheMinutes = 5;
 
-        public AmazonApiService(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+        public AmazonApiService(IHttpClientFactory httpClientFactory, IConfiguration configuration, IMemoryCache cache)
         {
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
+            _cache = cache;
         }
 
         public override async Task<IEnumerable<ProductDto>> GetBestSellersAsync()
         {
+            var useCache = _configuration.GetValue<bool>("Amazon:UseCache", true);
+
+            if (useCache && _cache.TryGetValue(CacheKey, out IEnumerable<ProductDto> cachedProducts))
+            {
+                return cachedProducts;
+            }
+
             var rapidHost = _configuration["RapidApi:Host"];
             var rapidKey = _configuration["RapidApi:Key"];
             if (string.IsNullOrEmpty(rapidHost) || string.IsNullOrEmpty(rapidKey))
@@ -43,7 +55,15 @@ namespace AmazonBestSellersExplorer.WebAPI.Services.API
                 throw new HttpRequestException($"Zapytanie API nie powiodło się z kodem błędu {response.StatusCode}: {content}");
             }
 
-            return ParseAmazonResponse(content);
+            var result = ParseAmazonResponse(content);
+
+            if (useCache)
+            {
+                var cacheMinutes = _configuration.GetValue<int>("Amazon:CacheMinutes", DefaultCacheMinutes);
+                _cache.Set(CacheKey, result, TimeSpan.FromMinutes(cacheMinutes));
+            }
+
+            return result;
         }
     }
 }
