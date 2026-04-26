@@ -5,6 +5,7 @@ using AmazonBestSellersExplorer.WebAPI.Models;
 using AmazonBestSellersExplorer.WebAPI.Repositories;
 using AmazonBestSellersExplorer.WebAPI.Services;
 using AmazonBestSellersExplorer.WebAPI.Services.API;
+using AmazonBestSellersExplorer.WebAPI.Middleware;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -74,6 +75,8 @@ else
 builder.Services.AddControllers();
 builder.Services.AddHttpClient();
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAngular");

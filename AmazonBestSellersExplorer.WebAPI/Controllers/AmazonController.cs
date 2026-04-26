@@ -32,15 +32,8 @@ namespace AmazonBestSellersExplorer.WebAPI.Controllers
         [HttpGet("best-sellers")]
         public async Task<IActionResult> GetBestSellers()
         {
-            try
-            {
-                var result = await _amazonApiService.GetBestSellersAsync();
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return Problem(detail: ex.Message, statusCode: 500);
-            }
+            var result = await _amazonApiService.GetBestSellersAsync();
+            return Ok(result);
         }
 
         [HttpGet("favorites")]
