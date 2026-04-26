@@ -1,8 +1,9 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ToolbarModule } from 'primeng/toolbar';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,11 +13,15 @@ import { ToolbarModule } from 'primeng/toolbar';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent {
-  @Input() loggedUser = 'none';
   @Input() isFavorites = false;
 
   @Output() onLogin = new EventEmitter<void>();
   @Output() onRegister = new EventEmitter<void>();
   @Output() onFavorites = new EventEmitter<void>();
-  @Output() onLogout = new EventEmitter<void>();
+
+  constructor(public authService: AuthService, private router: Router) {}
+
+  logout() {
+    this.authService.logout();
+  }
 }

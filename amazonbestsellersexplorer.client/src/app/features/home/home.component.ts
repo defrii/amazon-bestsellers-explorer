@@ -1,10 +1,10 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { ButtonModule } from 'primeng/button';
 import { ToolbarModule } from 'primeng/toolbar';
-import { FavoritesService } from '../../core/services/favorites.service';
+import { AmazonService } from '../../core/services/amazon.service';
+import { AuthService } from '../../core/services/auth.service';
 import { ProductListComponent } from '../../shared/components/product-list/product-list.component';
 import { NavbarComponent } from '../../shared/components/navbar/navbar.component';
 import { Product } from '../../core/models/product.model';
@@ -23,40 +23,39 @@ import { Product } from '../../core/models/product.model';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  loggedUser = localStorage.getItem('login') || 'none';
   products = signal<Product[] | null>(null);
   error = '';
 
   constructor(
     private router: Router,
-    private http: HttpClient,
-    public favoritesService: FavoritesService
-  ) { }
+    public amazonService: AmazonService,
+    public authService: AuthService
+  ) { 
+    // Automatycznie ładuj ulubione gdy użytkownik się zaloguje
+    effect(() => {
+      if (this.authService.isAuthenticated()) {
+        this.amazonService.loadFavoriteAsins();
+      } else {
+        this.amazonService.favoriteAsins.set(new Set());
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.loadProducts();
-    if (this.loggedUser !== 'none') {
-      this.favoritesService.loadFavoriteAsins();
-    }
   }
 
   goLogin() { this.router.navigate(['/login']); }
   goRegister() { this.router.navigate(['/register']); }
   goFavorites() { this.router.navigate(['/favorites']); }
-
-  logout() {
-    localStorage.removeItem('jwt');
-    localStorage.removeItem('login');
-    this.loggedUser = 'none';
-    this.favoritesService.favoriteAsins.set(new Set());
-  }
+  logout() { this.authService.logout(); }
 
   private loadProducts() {
     this.error = '';
     this.products.set(null);
-    this.http.get<any>('/api/amazon/best-sellers').subscribe({
-      next: (resp: any) => {
-        this.products.set(Array.isArray(resp) ? resp : []);
+    this.amazonService.getBestSellers().subscribe({
+      next: (resp) => {
+        this.products.set(resp);
       },
       error: (err) => {
         this.error = 'Nie udało się załadować produktów';

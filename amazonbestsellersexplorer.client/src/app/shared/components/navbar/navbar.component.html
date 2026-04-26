@@ -3,16 +3,16 @@
         <img src="logo.png" alt="Amazon BestSellers Explorer" class="navbar-logo" routerLink="/" />
     </div>
     <div class="p-toolbar-group-end toolbar-actions">
-        <span *ngIf="loggedUser !== 'none'" class="user-greeting">
-            <i class="pi pi-user"></i> {{ loggedUser }}
+        <span *ngIf="authService.isAuthenticated()" class="user-greeting">
+            <i class="pi pi-user"></i> {{ authService.currentUser() }}
         </span>
-        <p-button *ngIf="loggedUser === 'none'" label="Zaloguj" icon="pi pi-sign-in" severity="secondary"
+        <p-button *ngIf="!authService.isAuthenticated()" label="Zaloguj" icon="pi pi-sign-in" severity="secondary"
             (onClick)="onLogin.emit()"></p-button>
-        <p-button *ngIf="loggedUser === 'none'" label="Zarejestruj" icon="pi pi-user-plus"
+        <p-button *ngIf="!authService.isAuthenticated()" label="Zarejestruj" icon="pi pi-user-plus"
             (onClick)="onRegister.emit()"></p-button>
-        <p-button *ngIf="loggedUser !== 'none'" label="Moje ulubione" icon="pi pi-heart-fill" severity="danger"
+        <p-button *ngIf="authService.isAuthenticated()" label="Moje ulubione" icon="pi pi-heart-fill" severity="danger"
             [outlined]="!isFavorites" (onClick)="onFavorites.emit()"></p-button>
-        <p-button *ngIf="loggedUser !== 'none'" label="Wyloguj" icon="pi pi-sign-out"
-            (onClick)="onLogout.emit()"></p-button>
+        <p-button *ngIf="authService.isAuthenticated()" label="Wyloguj" icon="pi pi-sign-out"
+            (onClick)="logout()"></p-button>
     </div>
 </p-toolbar>

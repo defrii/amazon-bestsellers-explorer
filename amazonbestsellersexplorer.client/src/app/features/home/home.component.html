@@ -1,4 +1,4 @@
-<app-navbar [loggedUser]="loggedUser" [isFavorites]="false" (onLogin)="goLogin()" (onRegister)="goRegister()"
+<app-navbar [isFavorites]="false" (onLogin)="goLogin()" (onRegister)="goRegister()"
     (onFavorites)="goFavorites()" (onLogout)="logout()">
 </app-navbar>
 
@@ -9,9 +9,9 @@
     </div>
 
     <div class="product-grid-wrapper">
-        <app-product-list [products]="products()" [favoriteAsins]="favoritesService.favoriteAsins()"
-            [isLoadingFavorite]="favoritesService.isLoadingFavorite()" [loggedUser]="loggedUser" [error]="error"
-            (toggleFavoriteAction)="favoritesService.toggleFavorite($event)">
+        <app-product-list [products]="products()" [favoriteAsins]="amazonService.favoriteAsins()"
+            [isLoadingFavorite]="amazonService.isLoadingFavorite()" [loggedUser]="authService.currentUser() || 'none'" [error]="error"
+            (toggleFavoriteAction)="amazonService.toggleFavorite($event)">
         </app-product-list>
     </div>
 </div>

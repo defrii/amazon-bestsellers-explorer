@@ -1,7 +1,10 @@
 import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
+import { inject } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
+import { AuthService } from './services/auth.service';
 
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
+  const authService = inject(AuthService);
   const token = localStorage.getItem('jwt');
 
   let authReq = req;
@@ -15,10 +18,9 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(authReq).pipe(
     catchError((error: HttpErrorResponse) => {
-      // usuń jwt gdy wygaśnie
+      // usuń sesję gdy token wygaśnie
       if (error.status === 401) {
-        localStorage.removeItem('jwt');
-        localStorage.removeItem('login');
+        authService.clearSession();
       }
       return throwError(() => error);
     })

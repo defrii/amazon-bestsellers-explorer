@@ -1,5 +1,4 @@
 <app-navbar
-    [loggedUser]="loggedUser"
     [isFavorites]="true"
     (onFavorites)="goHome()"
     (onLogout)="logout()">
@@ -14,9 +13,9 @@
     <div class="product-grid-wrapper">
         <app-product-list
             [products]="products()"
-            [favoriteAsins]="favoritesService.favoriteAsins()"
-            [isLoadingFavorite]="favoritesService.isLoadingFavorite()"
-            [loggedUser]="loggedUser"
+            [favoriteAsins]="amazonService.favoriteAsins()"
+            [isLoadingFavorite]="amazonService.isLoadingFavorite()"
+            [loggedUser]="authService.currentUser() || 'none'"
             [error]="error"
             emptyMessage="Nie masz jeszcze żadnych ulubionych produktów."
             (toggleFavoriteAction)="handleToggle($event)">

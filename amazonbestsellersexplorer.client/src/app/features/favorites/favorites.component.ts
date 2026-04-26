@@ -1,9 +1,10 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ToolbarModule } from 'primeng/toolbar';
-import { FavoritesService } from '../../core/services/favorites.service';
+import { AmazonService } from '../../core/services/amazon.service';
+import { AuthService } from '../../core/services/auth.service';
 import { ProductListComponent } from '../../shared/components/product-list/product-list.component';
 import { NavbarComponent } from '../../shared/components/navbar/navbar.component';
 import { Product } from '../../core/models/product.model';
@@ -16,17 +17,23 @@ import { Product } from '../../core/models/product.model';
   styleUrls: ['./favorites.component.scss']
 })
 export class FavoritesComponent implements OnInit {
-  loggedUser = localStorage.getItem('login') || 'none';
   products = signal<Product[] | null>(null);
   error = '';
 
   constructor(
     private router: Router,
-    public favoritesService: FavoritesService
-  ) {}
+    public authService: AuthService,
+    public amazonService: AmazonService
+  ) {
+    effect(() => {
+      if (!this.authService.isAuthenticated()) {
+        this.router.navigate(['/login']);
+      }
+    });
+  }
 
   ngOnInit(): void {
-    if (this.loggedUser === 'none') {
+    if (!this.authService.isAuthenticated()) {
       this.router.navigate(['/login']);
       return;
     }
@@ -36,11 +43,11 @@ export class FavoritesComponent implements OnInit {
   private loadFavorites() {
     this.products.set(null);
     this.error = '';
-    this.favoritesService.getFavoriteDetails().subscribe({
+    this.amazonService.getFavoriteDetails().subscribe({
       next: (items) => {
         this.products.set(items);
         const asins = new Set(items.map(i => i.asin!).filter(Boolean));
-        this.favoritesService.favoriteAsins.set(asins);
+        this.amazonService.favoriteAsins.set(asins);
       },
       error: (err) => {
         this.error = 'Nie udało się załadować ulubionych produktów.';
@@ -54,25 +61,20 @@ export class FavoritesComponent implements OnInit {
     if (!product.asin) return;
     const asin = product.asin;
 
-    this.favoritesService.isLoadingFavorite.set(asin);
-    this.favoritesService.removeFavorite(asin).subscribe({
+    this.amazonService.isLoadingFavorite.set(asin);
+    this.amazonService.removeFavorite(asin).subscribe({
       next: () => {
-        const newSet = new Set(this.favoritesService.favoriteAsins());
+        const newSet = new Set(this.amazonService.favoriteAsins());
         newSet.delete(asin);
-        this.favoritesService.favoriteAsins.set(newSet);
-        this.favoritesService.isLoadingFavorite.set(null);
+        this.amazonService.favoriteAsins.set(newSet);
+        this.amazonService.isLoadingFavorite.set(null);
         const updated = (this.products() ?? []).filter(p => p.asin !== asin);
         this.products.set(updated);
       },
-      error: () => this.favoritesService.isLoadingFavorite.set(null)
+      error: () => this.amazonService.isLoadingFavorite.set(null)
     });
   }
 
   goHome() { this.router.navigate(['/']); }
-
-  logout() {
-    localStorage.removeItem('jwt');
-    localStorage.removeItem('login');
-    this.router.navigate(['/']);
-  }
+  logout() { this.authService.logout(); }
 }

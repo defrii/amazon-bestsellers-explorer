@@ -1,13 +1,13 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { MessageModule } from 'primeng/message';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -31,20 +31,16 @@ export class LoginComponent {
   message = signal('');
   isLoading = signal(false);
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   loginUser() {
     this.message.set('');
-    this.http.post('/api/auth/login', { login: this.login(), password: this.password() }).subscribe({
-      next: (res: any) => {
+    this.isLoading.set(true);
+    
+    this.authService.login({ login: this.login(), password: this.password() }).subscribe({
+      next: (res) => {
         this.isLoading.set(false);
-        if (res?.token) {
-          localStorage.setItem('jwt', res.token);
-          if (res.login) localStorage.setItem('login', res.login);
-          this.router.navigate(['/']);
-        } else {
-          this.message.set('Login succeeded, but no token received.');
-        }
+        this.router.navigate(['/']);
       },
       error: (err) => {
         this.isLoading.set(false);

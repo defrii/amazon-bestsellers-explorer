@@ -1,13 +1,18 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Product } from '../models/product.model';
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class FavoritesService {
+export class AmazonService {
   favoriteAsins = signal<Set<string>>(new Set());
   isLoadingFavorite = signal<string | null>(null);
 
   constructor(private http: HttpClient) { }
+
+  getBestSellers(): Observable<Product[]> {
+    return this.http.get<Product[]>('/api/amazon/best-sellers');
+  }
 
   loadFavoriteAsins() {
     this.http.get<string[]>('/api/amazon/favorites').subscribe({
@@ -16,11 +21,11 @@ export class FavoritesService {
     });
   }
 
-  getFavoriteDetails() {
+  getFavoriteDetails(): Observable<Product[]> {
     return this.http.get<Product[]>('/api/amazon/favorites/details');
   }
 
-  removeFavorite(asin: string) {
+  removeFavorite(asin: string): Observable<any> {
     return this.http.delete(`/api/amazon/favorites/${asin}`);
   }
 
