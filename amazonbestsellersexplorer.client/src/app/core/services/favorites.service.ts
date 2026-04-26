@@ -7,7 +7,7 @@ export class FavoritesService {
   favoriteAsins = signal<Set<string>>(new Set());
   isLoadingFavorite = signal<string | null>(null);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   loadFavoriteAsins() {
     this.http.get<string[]>('/api/amazon/favorites').subscribe({
