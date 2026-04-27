@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using AmazonBestSellersExplorer.WebAPI.Helpers;
-using AmazonBestSellersExplorer.WebAPI.Models;
 using AmazonBestSellersExplorer.WebAPI.Services;
 using AmazonBestSellersExplorer.WebAPI.Services.API;
 using AmazonBestSellersExplorer.WebAPI.Dto;
@@ -11,6 +10,7 @@ using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AmazonBestSellersExplorer.WebAPI.Data;
 
 namespace AmazonBestSellersExplorer.WebAPI.Controllers
 {

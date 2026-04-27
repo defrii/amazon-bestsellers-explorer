@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using AmazonBestSellersExplorer.WebAPI.Models;
+using AmazonBestSellersExplorer.WebAPI.Data;
 
 namespace AmazonBestSellersExplorer.WebAPI.Repositories
 {

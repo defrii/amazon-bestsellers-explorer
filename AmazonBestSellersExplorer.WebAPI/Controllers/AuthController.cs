@@ -4,7 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using AmazonBestSellersExplorer.WebAPI.Models;
+using AmazonBestSellersExplorer.WebAPI.Data;
 using AmazonBestSellersExplorer.WebAPI.Services;
 using AmazonBestSellersExplorer.WebAPI.Dto;
 using Microsoft.AspNetCore.Mvc;

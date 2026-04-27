@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AmazonBestSellersExplorer.WebAPI.Dto;
-using AmazonBestSellersExplorer.WebAPI.Models;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 

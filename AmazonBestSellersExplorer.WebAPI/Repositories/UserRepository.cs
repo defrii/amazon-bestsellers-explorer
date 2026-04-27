@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using AmazonBestSellersExplorer.WebAPI.Data;
-using AmazonBestSellersExplorer.WebAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AmazonBestSellersExplorer.WebAPI.Repositories

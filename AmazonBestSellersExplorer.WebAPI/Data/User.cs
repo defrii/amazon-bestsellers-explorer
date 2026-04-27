@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AmazonBestSellersExplorer.WebAPI.Models
+namespace AmazonBestSellersExplorer.WebAPI.Data
 {
     public class User
     {

@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
+using AmazonBestSellersExplorer.WebAPI.Data;
 using AmazonBestSellersExplorer.WebAPI.Helpers;
-using AmazonBestSellersExplorer.WebAPI.Models;
 using AmazonBestSellersExplorer.WebAPI.Repositories;
 using AmazonBestSellersExplorer.WebAPI.Services.Core;
 using Microsoft.AspNetCore.Identity;

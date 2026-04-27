@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AmazonBestSellersExplorer.WebAPI.Models;
+using AmazonBestSellersExplorer.WebAPI.Data;
 using AmazonBestSellersExplorer.WebAPI.Repositories;
 using AmazonBestSellersExplorer.WebAPI.Services.Core;
 

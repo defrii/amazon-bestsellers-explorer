@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using AmazonBestSellersExplorer.WebAPI.Models;
+using AmazonBestSellersExplorer.WebAPI.Data;
 using AmazonBestSellersExplorer.WebAPI.Services.Core;
 
 namespace AmazonBestSellersExplorer.WebAPI.Services

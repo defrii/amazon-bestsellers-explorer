@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using AmazonBestSellersExplorer.WebAPI.Dto;
-using AmazonBestSellersExplorer.WebAPI.Models;
 using Microsoft.Extensions.Configuration;
 
 namespace AmazonBestSellersExplorer.WebAPI.Services.API

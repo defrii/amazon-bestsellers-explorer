@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using AmazonBestSellersExplorer.WebAPI.Models;
 
 namespace AmazonBestSellersExplorer.WebAPI.Data
 {

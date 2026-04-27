@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AmazonBestSellersExplorer.WebAPI.Dto;
-using AmazonBestSellersExplorer.WebAPI.Models;
 
 namespace AmazonBestSellersExplorer.WebAPI.Services.API
 {

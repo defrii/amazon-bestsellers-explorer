@@ -1,7 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.EntityFrameworkCore;
 using AmazonBestSellersExplorer.WebAPI.Data;
-using AmazonBestSellersExplorer.WebAPI.Models;
 using AmazonBestSellersExplorer.WebAPI.Repositories;
 using AmazonBestSellersExplorer.WebAPI.Services;
 using AmazonBestSellersExplorer.WebAPI.Services.API;

@@ -1,4 +1,4 @@
-namespace AmazonBestSellersExplorer.WebAPI.Models
+namespace AmazonBestSellersExplorer.WebAPI.Data
 {
     public class FavoriteProduct
     {
